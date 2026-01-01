@@ -1,0 +1,168 @@
+<?php
+//$data = $this->data ?? [];
+$this->headLink()
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'));
+$this->headScript()
+        ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+        ->appendFile($this->basePath('js/Report/AllReport/application-report.js'));
+?>
+
+<?php if ($this->messages) { ?>
+    <script>
+        document.messages =<?php echo json_encode($this->messages); ?>
+    </script>
+<?php } ?>
+
+<script>
+   document.editLink = '<?= $this->url("allreport", ["action" => "editApplication"] , ['id' => $vacancy->id]); ?>';
+   
+
+    document.deleteLink = '<?= $this->url("allreport", ["action" => "delete"]); ?>';
+    document.pullApplicationReport='<?php echo $this->url('allreport', ['action' => 'pullApplicationReport']); ?>';
+    document.acl =<?php echo json_encode($acl); ?>;
+</script>
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\Allreport')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<?php
+if ($this->messages && (sizeof($this->messages) > 1)) {
+    print '<div class="alert alert-warning alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+    <strong>Warning!</strong> ';
+    print $this->messages[1];
+    print '</div>';
+}
+?>
+<?php if ($this->messages) { ?>
+    <script>
+        document.messages =<?php echo json_encode($this->messages); ?>
+    </script>
+<?php } ?>
+
+<div id="employeeList" >
+    <div class="portlet light bg-inverse">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-paper-plane font-green-haze"></i>
+                <span class="caption-subject bold font-green-haze uppercase"> Filter Records</span>
+            </div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                <a href="" class="fullscreen" data-original-title="" title=""> </a>
+            </div>
+            <div class="actions">
+                <div class="btn-group">
+                    <a class="btn btn-sm blue-soft" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-copy"></i> Tools
+                        <i class="fa fa-angle-down "></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li >
+                            <a href="javascript:;" id="excelExport">
+                                <i class="fa fa-file-excel-o" ></i> Export to Excel </a>
+                        </li>
+                        <li >
+                            <a href="javascript:;" id="pdfExport">
+                                <i class="fa fa-file-pdf-o" ></i> Export to PDF </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <button class="btn btn-primary searchBtn" id="btn" data-value="AA">
+                         All
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="NA">
+                         New
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="IA">
+                         For Initial Interview
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="PI">
+                         Passed I
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="RA">
+                         Reject Application
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="FV">
+                         Final Interview
+                    </button>
+                </div>
+                </div>
+                <div class="row" style="margin-top: 2rem;">
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="PL">
+                         Passed ALL ROUND
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="FI">
+                Failed FI
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="FP">
+                         For Pooling
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="JO">
+                         Job Offersss
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="HA">
+                         Hired
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                <button class="btn btn-primary searchBtn" id="btn" data-value="WA">
+                         Withdraw Application
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="applicationReportTable">
+    </div>
+
+    <style type="text/css">
+        .employee-photo {
+            display: inline-block;
+            width: 50px;
+            height: 40px;
+            background-size: 50px 40px;
+            background-position: center center;
+            vertical-align: middle;
+            line-height: 32px;
+            box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+            /*margin-left: 5px;*/
+        }
+
+        .customer-name {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 32px;
+            padding-left: 3px;
+        }
+        button{
+            width: 17rem;
+        }
+    </style>
+</div>

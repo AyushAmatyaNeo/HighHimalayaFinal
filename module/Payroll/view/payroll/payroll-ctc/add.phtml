@@ -1,0 +1,115 @@
+<?php
+$this->headScript()->appendFile($this->basePath('js/payroll/payroll-ctc/add.js'));
+
+$form->setAttribute('role', 'form');
+$form->setAttribute('id', 'rating-form');
+
+$flatId = $form->get('flatId');
+$name = $form->get('name');
+$type = $form->get('type');
+$flatId = $form->get('flatId');
+$value = $form->get('value');
+$orderNumber = $form->get('orderNumber');
+
+$submit = $form->get('submit');
+$submit->setAttribute('value', 'SUBMIT');
+
+$form->setAttribute('action', $this->url('payroll-ctc', ['action' => 'add']));
+
+if ($this->messages) {
+    print '<ul class="help-block bg-danger" style="background:#f3e250;">';
+    foreach ($this->messages as $message) {
+        print '<li>' . $message . '</li>';
+    }
+    print '</ul>';
+}
+
+$form->prepare();
+?>
+
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\payroll-ctc')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <h3>Add Payroll CTC Setup</h3>
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>New Entry
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php
+                print $this->form()->openTag($form);
+                ?>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group <?= empty($name->getMessages()) ? "" : "has-error" ?>">
+                            <?php print $this->formLabel($name); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <input type="text" name="name" id="name" class="form-control" required>
+                            <?php print $this->formElementErrors()->render($name, ['class' => 'help-block']); ?>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group <?= empty($flatId->getMessages()) ? "" : "has-error" ?>">
+                            <?php print $this->formLabel($flatId); ?>
+                            <select name="flatId" id="flatId" class="form-control">
+                                <option value="" selected>Select Flat</option>
+                                <?php foreach ($flats as $flat) { ?>
+                                    <option value="<?php echo $flat['FLAT_ID'] ?>"><?php echo $flat['FLAT_EDESC'] ?></option>
+                                <?php } ?>
+                            </select>
+                            <?php print $this->formElementErrors()->render($type, ['class' => 'help-block']); ?>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group <?= empty($type->getMessages()) ? "" : "has-error" ?>">
+                            <?php print $this->formLabel($type); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <select name="type" id="type" class="form-control" required>
+                                <option value="" selected disabled>Select Type</option>
+                                <option value="A">Addition</option>
+                                <option value="D">Deduction</option>
+                            </select>
+                            <?php print $this->formElementErrors()->render($type, ['class' => 'help-block']); ?>
+                        </div>
+                    </div>
+
+                    <!-- Value Field Wrapper (Initially Hidden) -->
+                    <div class="col-sm-3" id="value-field-wrapper" style="display:none;">
+                        <div class="form-group <?= empty($value->getMessages()) ? "" : "has-error" ?>">
+                            <?php print $this->formLabel($value); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <input type="number" id="value" name="value" min="1" class="form-control" required>
+                            <?php print $this->formElementErrors()->render($value, ['class' => 'help-block']); ?>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <div class="form-group <?= empty($orderNumber->getMessages()) ? "" : "has-error" ?>">
+                            <?php print $this->formLabel($orderNumber); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <input type="number" id="orderNumber" name="orderNumber" min="1" class="form-control">
+                            <?php print $this->formElementErrors()->render($orderNumber, ['class' => 'help-block']); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <?php
+                print $this->formSubmit($submit);
+                print $this->form()->closeTag();
+                ?>
+
+            </div>
+
+        </div>
+    </div>
+</div>

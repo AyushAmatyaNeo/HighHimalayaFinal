@@ -1,0 +1,114 @@
+<?php
+$this->headLink()
+    ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+    ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'))
+    ->appendStylesheet($this->basePath('dropzone/dropzone.min.css'));
+
+    $this->headScript()
+    ->appendFile($this->basePath('dropzone/dropzone.min.js'))
+    ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+    ->appendFile($this->basePath('js/setup/letter/index.js'));
+
+?>
+<?php if ($this->messages) { ?>
+    <script>
+        document.messages = <?php echo json_encode($this->messages); ?>
+    </script>
+<?php } ?>
+
+<script>
+    document.editLink = '<?= $this->url("letterSetup", ["action" => "edit"]) ?>';
+    document.deleteLink = '<?= $this->url("letterSetup", ["action" => "delete"]) ?>';
+    document.subletter = '<?= $this->url("letterSetup", ["action" => "subLettter"]) ?>';
+    document.childList = '<?= $this->url("letterSetup", ["action" => "childList"]) ?>';
+    document.imageData =<?php echo json_encode($imageData); ?>;
+
+    document.acl = <?php echo json_encode($acl); ?>;
+</script>
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\letterSetup')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+
+<div class="margin-top-20">
+    <div class="portlet light bg-inverse">
+        <div class="portlet-title">
+            <!-- <div class="tools">
+                <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                <a href="" class="fullscreen" data-original-title="" title=""> </a>
+            </div> -->
+            <div class="actions">
+                <?php if ($acl['ALLOW_ADD'] == 'Y'): ?>
+                    <a href="<?= $this->url('letterSetup', ['action' => 'add']) ?>" class="btn default btn-sm">
+                        <i class="fa fa-plus-square icon-black"></i>
+                        New
+                    </a>
+                    <a href="<?= $this->url('letterSetup', ['action' => 'assign']) ?>" class="btn default btn-sm">
+                        <i class="fa fa-plus-square icon-black"></i>
+                        Assign
+                    </a>
+                    <a href="#" class="btn default btn-sm" data-toggle="modal" data-target="#myModal">
+                        <i class="fa fa-plus-square icon-black"></i>
+                        Letter Head
+                    </a>
+
+                <?php endif; ?>
+                <input required name="logo" id="form-logo" class="form-control" type="hidden" value="">
+
+                <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">Letter Head</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row form-group">
+                                    <span class="required" aria-required="true">*</span>
+                                    <div class="col-sm-4">
+                                        <form action="<?= $this->url('letterSetup', ["action" => "fileUpload"]) ?>"
+                                            class="dropzone"
+                                            id="my-awesome-dropzone">
+                                        </form>
+                                        <div id="uploadedImage" class="cbp-caption-defaultWrap">
+                                            <image style="width:100%;height:144px;" />
+                                        </div>
+                                        <span class="errorMsg" id="EmptyFile" style="display: none;">Please Select an Image!</span>
+                                        <span class="errorMsg" id="InvalidFile" style="display: none;">Invalid file type. Only PNG, JPG, and JPEG files are allowed.</span><br>
+                                        <button id="uploadFile" class="btn btn-default mt-5">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="btn-group">
+                    <a class="btn btn-sm blue-soft" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-copy"></i> Tools
+                        <i class="fa fa-angle-down "></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:;" id="export" class="hris-export-to-excel" hris-export-to-excel-target="letterTable">
+                                <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" id="pdfExport">&nbsp;
+                                <i class="fa fa-file-pdf-o"></i>
+                                Export to PDF
+                            </a>
+                        </li>
+                    </ul>
+                </div> -->
+            </div>
+        </div>
+        <div id="letterTable">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,177 @@
+<?php
+
+$this->headLink()
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'))
+         ->appendStylesheet($this->basePath('assets/global/plugins/nepalidate/nepali.datepicker.v2.1.min.css'))
+        ->appendStylesheet($this->basePath('dropzone/dropzone.min.css'));
+
+$this->headScript() 
+        ->appendFile($this->basePath('assets/global/plugins/nepalidate/nepali.datepicker.v2.1.min.js'))
+        ->appendFile($this->basePath('js/nepali-datepicker-ext.js'))
+        ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+        ->appendFile($this->basePath('js/Report/AllReport/interview-call.js'));
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      /* display: flex; */
+      align-items: center;
+      justify-content: center;
+      
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+       max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 2em !important;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .large{
+      font-size: 15px !important;
+    }
+
+  
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <form id="statusForm" method="post" action="<?= $this->url("allreport", ['action' => 'editInterView']) ?>">
+    <div class="form-group">
+    <input type="text" hidden id="interview_id" name="interview_id" value=<?=$id?>>
+    <label for="full_name" class="large">Mr. / Mrs. Full Name</label>
+   
+    <input type="text" name="full_name" value="<?= isset($interviewReport[0]['FULL_NAME']) ? htmlspecialchars($interviewReport[0]['FULL_NAME']) : ''; ?>" >
+</div>
+
+      <div class="form-group">
+        <label for="permanent_address" class="large">Permanent Address</label>
+        <input type="text" name="permanent_address" value="<?= isset($interviewReport[0]['PERMANENT_ADDRESS']) ? htmlspecialchars($interviewReport[0]['PERMANENT_ADDRESS']) : ''; ?>" >
+      </div>
+
+      <div class="form-group">
+        <label for="temporary_address" class="large">Temporary Address</label>
+        <input type="text" name="temporary_address" value="<?= isset($interviewReport[0]['TEMPORARY_ADDRESS']) ? htmlspecialchars($interviewReport[0]['TEMPORARY_ADDRESS']) : ''; ?>" >
+      </div>
+
+      <div class="form-group">
+        <label for="contact_no" class="large">Contact No.</label>
+        <input type="text" name="contact_no" value="<?= isset($interviewReport[0]['CONTACT_NO']) ? htmlspecialchars($interviewReport[0]['CONTACT_NO']) : ''; ?>" >
+      </div>
+
+      <div class="form-group">
+        <label for="previous_company" class="large">Previous Company</label>
+        <input type="text" name="previous_company" value="<?= isset($interviewReport[0]['PREVIOUS_COMPANY']) ? htmlspecialchars($interviewReport[0]['PREVIOUS_COMPANY']) : ''; ?>" >
+      </div>
+
+      <div class="form-group">
+        <label for="previous_position" class="large">Previous Position</label>
+        <input type="text" name="previous_position" value="<?= isset($interviewReport[0]['PREVIOUS_POSITION']) ? htmlspecialchars($interviewReport[0]['PREVIOUS_POSITION']) : ''; ?>" >
+      </div>
+
+      <div class="form-group">
+        <label for="previous_salary" class="large">Previous Salary</label>
+        <input type="text" name="previous_salary" value="<?= isset($interviewReport[0]['PREVIOUS_SALARY']) ? htmlspecialchars($interviewReport[0]['PREVIOUS_SALARY']) : ''; ?>" >
+        
+      
+      </div>
+
+    <div class="form-group">
+    <label for="job_shifting_reason" class="large">Job Shifting Reason</label>
+    <textarea name="job_shifting_reason" rows="4" cols="40"><?= isset($interviewReport[0]['JOB_SHIFTING_REASON']) ? htmlspecialchars($interviewReport[0]['JOB_SHIFTING_REASON']) : ''; ?></textarea>
+    </div>
+
+
+    <div class="form-group">
+    <label for="vehicle_yn" class="large">Vehicle Y/N</label>
+    <select name="vehicle_yn">
+        <option value="Yes" <?= (isset($interviewReport[0]['VEHICLE_YN']) && $interviewReport[0]['VEHICLE_YN'] == 'Yes') ? 'selected' : ''; ?>>Yes</option>
+        <option value="No" <?= (isset($interviewReport[0]['VEHICLE_YN']) && $interviewReport[0]['VEHICLE_YN'] == 'No') ? 'selected' : ''; ?>>No</option>
+    </select>
+</div>
+
+      <div class="form-group">
+        <label for="expected_salary" class="large">Expected Salary</label>
+        <input type="text" name="expected_salary" value="<?= isset($interviewReport[0]['EXPECTED_SALARY']) ? htmlspecialchars($interviewReport[0]['EXPECTED_SALARY']) : ''; ?>" >
+      </div>
+
+      <div class="form-group">
+        <label for="negotiation" class="large">Negotiation</label>
+        <select name="negotiation">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+    <div class="form-group">
+    <label for="joiningDateEnglish" class="large">Expected Joining Date</label>
+    <input type="text" id="join" name="joining_date"  value="<?= isset($interviewReport[0]['JOINING_DATE']) ? htmlspecialchars($interviewReport[0]['JOINING_DATE']) : ''; ?>" required>
+    </div>
+        <!-- <div class="form-group">
+            <label for="joining_date_nepali" class="large">Expected Joining Date (Nepali)</label>
+            <input type="text" id="joiningDateNepali" class="nepali-calendar" value="<?= isset($interviewReport[0]['JOINING_DATE']) ? htmlspecialchars($interviewReport[0]['JOINING_DATE']) : ''; ?> "   required>
+        </div> -->
+        
+    <div class="form-group">
+    <label for="remarks" class="large">Remarks</label>
+    <textarea name="remarks" rows="4" cols="40"><?= isset($interviewReport[0]['REMARKS']) ? htmlspecialchars($interviewReport[0]['REMARKS']) : ''; ?></textarea>
+    </div>
+
+
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

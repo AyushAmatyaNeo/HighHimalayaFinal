@@ -1,0 +1,469 @@
+<?php
+$this->headScript()->appendFile($this->basePath('js/setup/letter/edit.js'));
+$this->headScript()
+    ->appendFile($this->basePath('assets/global/plugins/bootstrap-summernote/summernote.min.js'));
+$this->headLink()
+    ->appendStylesheet($this->basePath('assets/global/plugins/bootstrap-summernote/summernote.css'));
+?>
+
+<?php
+$letterTitle = $form->get('letterTitle');
+$nepaliText = $form->get('nepaliText');
+
+$submit = $form->get('submit');
+
+$form->setAttribute('action', $this->url('letterSetup', ['action' => 'add']));
+$form->setAttribute('action', $this->url('letterSetup', ['action' => 'edit', 'id' => $id]));
+$form->prepare();
+?>
+
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\letterSetup')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<script>
+    document.searchurl = '<?= $this->url("letterSetup", ["action" => "search"]) ?>';
+    document.pushDoc = '<?= $this->url("letterSetup", ["action" => "pushEmpDoc"]) ?>';
+    document.sendMail = '<?= $this->url("letterSetup", ["action" => "sendMail"]) ?>';
+</script>
+<style>
+    .letter-head {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+    }
+
+    .letter-head img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .letter-content {
+        position: absolute;
+        top: 50mm;
+        left: 10mm;
+        right: 10mm;
+        bottom: 10mm;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 61px;
+        height: 46px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: -12px;
+        left: 0;
+        right: 0;
+        bottom: 13px;
+        background-color: #ccc;
+        transition: 0.4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 15px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(26px);
+    }
+
+    /* Rounded slider */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    /* Initially hide the inputs */
+    .custom-style-inputs {
+        display: none;
+    }
+
+    .input-container {
+        display: flex;
+        align-items: center;
+        color: #FFFFFF;
+        background-color: #2196F3;
+    }
+
+    .input-container button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        font-size: 1.25rem;
+        border-radius: 0;
+    }
+
+    .input-container input {
+        text-align: center;
+        height: 2.5rem;
+    }
+
+    .input-container .btn {
+        border-radius: 0;
+    }
+
+    .page-number {
+        position: absolute;
+        bottom: 77px;
+        /* Adjust as necessary */
+        left: 93%;
+        transform: translateX(-50%);
+        z-index: 999;
+        text-align: right;
+    }
+</style>
+
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>Edit Setup
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?= $this->form()->openTag($form); ?>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="switch">
+                            <input type="checkbox" id="nepaliType">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="calendar-label" class="mt-3">Nepali Type</span>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 mt-5">
+                        <div class="row clearfix e-setup">
+                            <div class="col-md-12 colsm-12 col-xs-12">
+                                <?php print $this->formElement($nepaliText); ?>
+                                <?php print $this->formElementErrors()->render($nepaliText, ['class' => 'help-block error']); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php print $this->formLabel($letterTitle); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <?php print $this->formElement($letterTitle); ?>
+                            <?php print $this->formElementErrors()->render($letterTitle, ['class' => 'help-block']); ?>
+                            <span class="errorMsg" style="font-size:11px; color:red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable-line">
+                    <div class="tab-content" >
+                        <?php if (count($descriptions) > 0) : ?>
+                            <?php foreach ($descriptions as $key => $description) : ?>
+                                <div class="form-group">
+                                    <label class="control-label">Page <?= $key + 1 ?> </label>
+                                    <div class="summernote" id="summernote-<?= $key ?>">
+                                    </div>
+                                    <input name="description_<?= $key ?>" type="hidden" id="description-<?= $key ?>" value="<?= rawurlencode($description); ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="control-label">Variables</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <?php foreach ($variables as $key => $variable) : ?>
+                                <div class="col-sm-2" style="margin-top: 5px;">
+                                    <a class="btn btn-block variables" data-variable="<?= $key ?>" style="font-size: 0.9rem;"><?= $key ?></a>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">Custom Variables</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <?php foreach ($custom_variables as $key => $variable) : ?>
+                                <div class="col-sm-2" style="margin-top: 5px;">
+                                    <a class="btn btn-block custom_variables" data-variable="<?= $variable['Name'] ?>" data-id="<?= $variable['Id'] ?>" style="font-size: 0.9rem;">
+                                        <?= htmlspecialchars($variable['Name']) ?>
+                                    </a>
+                                </div>
+                            <?php endforeach; ?>
+                            <input type="hidden" id="customVariables" name="custom_variables">
+
+                        </div>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="switch">
+                            <input type="checkbox" <?= $letterSetup->isCustom == 'E' ? 'checked' : '' ?> name="is_custom" id="CustomStyle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="calendar-label" class="mt-3">Custom Style</span>
+                    </div>
+                    <div id="custom-style-inputs" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg-secondary custom-style-inputs">
+
+                        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                            <label for="top">Top:</label>
+                            <div class="input-group input-container">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="top" data-delta="-1">-</button>
+                                </div>
+                                <input type="number" class="form-control" id="top" name="top" value="<?= $letterSetup->topPosition ?>" placeholder="Value in mm" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="top" data-delta="1">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                            <label for="bottom">Bottom:</label>
+                            <div class="input-group input-container">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="bottom" data-delta="-1">-</button>
+                                </div>
+                                <input type="number" class="form-control" name="bottom" value="<?= $letterSetup->bottomPosition ?>" id="bottom" placeholder="Value in mm" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="bottom" data-delta="1">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                            <label for="left">Left:</label>
+                            <div class="input-group input-container">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="left" data-delta="-1">-</button>
+                                </div>
+                                <input type="number" class="form-control" name="left" value="<?= $letterSetup->leftPosition ?>" id="left" placeholder="Value in mm" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="left" data-delta="1">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                            <label for="right">Right:</label>
+                            <div class="input-group input-container">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="right" data-delta="-1">-</button>
+                                </div>
+                                <input type="number" class="form-control" name="right" value="<?= $letterSetup->rightPosition ?>" id="right" placeholder="Value in mm" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary btn-xs" type="button" data-target="right" data-delta="1">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- <div class="form-group">
+                    <label class="control-label">Subject</label>
+                    <span class="required" aria-required="true">*</span>
+                    <input required="required" name="subject" type="text" class="form-control" placeholder="Enter Subject" value="">
+                    <input type="hidden" name="id" value="" />
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">CC</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="control-label">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <a class="btn btn-success btnAddCC"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input name="ccEmail[]" type="text" class="form-control" placeholder="Email" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input name="ccName[]" type="text" class="form-control" placeholder="Name" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">BCC</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="control-label">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <a class="btn btn-success btnAddBCC"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input name="bccEmail[]" type="text" class="form-control" placeholder="Email" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input name="bccName[]" type="text" class="form-control" placeholder="Name" value="">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Message</label>
+                    <div class="summernoteMailMessage">
+                    </div>
+                    <input name="description" type="hidden" value="">
+                </div> -->
+               
+                <button class="btn btn-primary btn-xs " style="margin-bottom: 5px;" id="addPage">Add Page</button>
+                <?= $this->formSubmit($submit); ?>
+                <?= $this->form()->closeTag(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+$imgUrl = $this->basePath('uploads/' . $company_logo);
+?>
+<button id="print-preview-btn" onclick="printPreview()" class="btn btn-success">Print</button>
+
+<input type="hidden" id="ImageUrl" value="<?= $imgUrl ?>">
+<div id="letter-head-container">
+    <?php if (count($descriptions) > 0) : ?>
+        <?php foreach ($descriptions as $key => $description) : ?>
+            <div class="letter-head">
+                <img src="<?= $this->basePath('uploads/' . $company_logo); ?>" alt="Letterhead">
+                <div id="rendered-content-<?= $key ?>" class="letter-content"></div>
+                <label for="" class="page-number">Page <?= $key + 1 ?></label>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+<script>
+    function printPreview() {
+        // Create a new window (tab) for print preview
+        var printWindow = window.open('', '_blank', 'width=800,height=600');
+
+        // Copy the content from the current page to the new window
+        var printContents = document.getElementById('letter-head-container').innerHTML;
+        
+        // Include CSS for print preview
+        printWindow.document.write('<style>@media print {');
+        printWindow.document.write('body { font-family: Arial, sans-serif; margin: 0; padding: 0;}');
+        printWindow.document.write('.letter-head { display: block; margin-bottom: 20px; }');
+        printWindow.document.write('.letter-content { font-size: 14px; line-height: 1.6; margin-top: 20px;}');
+        printWindow.document.write('.page-number { display: none;}');
+        printWindow.document.write('.letter-head img { max-width: 100%; height: auto; }');
+        printWindow.document.write('@media print { .letter-head { page-break-after: always;} }');
+        printWindow.document.write('</style></head><body>');
+        printWindow.document.write('<style>');
+        printWindow.document.write(`
+            .letter-head {
+                position: relative;
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+            }
+
+            .letter-head img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .letter-content {
+                position: absolute;
+                top: 50mm;
+                left: 10mm;
+                right: 10mm;
+                bottom: 10mm;
+                padding: 15px;
+                box-sizing: border-box;
+            }
+
+            .page-number {
+                position: absolute;
+                bottom: 77px;
+                left: 93%;
+                transform: translateX(-50%);
+                z-index: 999;
+                text-align: right;
+            }
+        `);
+        printWindow.document.write('</style>');
+
+        // Insert the copied content into the new window
+        printWindow.document.write(printContents);
+        printWindow.document.write('</body></html>');
+
+        // Close the document to finish rendering the content
+        printWindow.document.close();
+
+        // Wait for the new document to be fully loaded, then trigger print
+        printWindow.onload = function() {
+            printWindow.print(); // Automatically trigger the print dialog in the new tab
+        };
+    }
+</script>
+
+<script type="text/javascript">
+    var editorCount = <?= count($descriptions) ?>;
+    var variables = <?= json_encode($variables) ?>;
+</script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> -->

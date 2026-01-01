@@ -1,0 +1,96 @@
+<?php
+$this->headLink()
+    ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+    ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'));
+$this->headScript()
+    ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+    ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+    // ->appendFile($this->basePath('assets/global/plugins/js-xlsx-master/dist/xlsx.full.min.js'))
+    ->appendFile($this->basePath('js/setup/letter/assign.js'));
+
+?>
+
+<?php if ($this->messages) { ?>
+    <script>
+        document.messages = <?php echo json_encode($this->messages); ?>
+    </script>
+<?php } ?>
+
+<script>
+    document.getChilds = '<?php echo $this->url("letterSetup", ["action" => "childList"]); ?>';
+    document.assignLetter = '<?php echo $this->url("letterSetup", ["action" => "assign"]); ?>';
+    document.viewEmpList = '<?php echo $this->url("letterSetup", ["action" => "viewEmpList"]); ?>';
+    document.empLetters = '<?php echo $this->url("letterSetup", ["action" => "empLetters"]); ?>';
+
+    document.employeeLists = <?php echo json_encode($employees); ?>;
+    document.acl = <?php echo json_encode($acl); ?>;
+</script>
+
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\flatValue')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<style>
+    .checkbox-group label {
+        padding-right: 15px;
+    }
+
+    .errorMsg {
+        display: none;
+        color: red;
+    }
+</style>
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>
+                    Letter Assign
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form id="assignmentForm" method="post" action="/your-form-handler">
+                    <div class=" row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="leaveId">Employees</label>
+                                <span class="required" aria-required="true">*</span>
+                                <select id="employeeId" class="form-control" multiple="multiple" name="employeeIds[]"></select>
+
+                                <span class="errorMsg">This field is required </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="leaveId">Letters</label>
+                                <span class="required" aria-required="true">*</span>
+                                <select name="letterId" required="required" id="letterId" class="form-control">
+                                    <option value="" disabled="" selected="">Please select</option>
+                                    <?php foreach ($letter_lists as $key => $value) { ?>
+                                        <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                    <?php } ?>
+                                </select>
+                                <span class="errorMsg">This field is required </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="childLabel" style="display: none;">Related Letters</label>
+                            <div id="checkbox-container" class="checkbox-group ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-2 ">
+                            <input type="button" name="submit" id="submit" value="Assign" class="btn btn-primary">
+                            <input type="button" name="" id="view" value="View" class="btn btn-warning">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="viewEmployeeList"></div>

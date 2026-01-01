@@ -1,0 +1,145 @@
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        
+
+        <ul class="page-sidebar-menu page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+            <li class="sidebar-toggler-wrapper hide">
+                <div class="sidebar-toggler">
+                    <span></span>
+                </div>
+            </li>
+            <li class="sidebar-search-wrapper">
+            <form class="sidebar-search" id="sidebar-search">
+                <div class="input-group" style="width: 100%;">
+                    <input type="text" class="form-control" id="sidebar-search-input" placeholder="Search..." onkeyup="filterMenu()">
+                    <!-- <span class="input-group-btn">
+                        <a href="javascript:;" class="btn submit">
+                            <i class="icon-magnifier"></i>
+                        </a>
+                    </span> -->
+                </div>
+            </form>
+        </li>
+
+            <?php
+            function generateMenus($page)
+            {
+                $isActive = $page->isActive();
+                $isChildActive = $page->isActive(true);
+                $active = $isActive ? 'active' : ($isChildActive ? 'active open' : '');
+                $subMenus = generateSubMenus($page);
+
+                $showSubMenus = $page->hasPages() && (!$page->isChildAllInvisible) ? "class='nav-link nav-toggle'" : "";
+                $selected = $isActive || $isChildActive ? "<span class='selected'></span>" : "";
+                $isOpen = $isChildActive ? 'open' : '';
+                $showArrow = $page->hasPages() && (!$page->isChildAllInvisible) ? "<span class='arrow " . $isOpen . "'></span>" : "";
+
+                $showHide = (($page->isVisible == 'N') ? "hide" : "");
+                return "<li class='nav-item " . $active . " " . $showHide . "'>"
+                    . "<a href='" . $page->getHref() . "' " . $showSubMenus . " >"
+                    . "<i class='" . $page->icon . "'></i>"
+                    . "<span class='title'>"
+                    . $page->getLabel()
+                    . "</span>"
+                    . $selected
+                    . $showArrow
+                    . "</a>"
+                    . $subMenus
+                    . "</li>";
+            }
+
+            function generateSubMenus($page)
+            {
+                if ($page->hasPages()) {
+                    $subPages = $page->getPages();
+                    $pageList = "";
+                    foreach ($subPages as $subPage) {
+                        $menu = generateMenus($subPage);
+                        $pageList = $pageList . $menu;
+                    }
+
+                    $showSubMenus = $page->isActive(true) ? "style='display:block;'" : "style='display:none'";
+                    $ul = "<ul class='sub-menu' $showSubMenus>";
+                    $ulx = "</ul>";
+                    return $ul . $pageList . $ulx;
+                } else {
+                    return '';
+                }
+            }
+            ?>
+            <?php foreach ($this->container as $page) : ?>
+                <?php echo generateMenus($page); ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+
+<script>
+// function filterMenu() {
+//     let input = document.getElementById("sidebar-search-input");
+//     let filter = input.value.toLowerCase();
+//     let menuItems = document.querySelectorAll(".page-sidebar-menu .nav-item");
+
+//     menuItems.forEach(function (item) {
+//         let text = item.textContent || item.innerText;
+//         item.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+//     });
+// }
+
+function filterMenu() {
+    let input = document.getElementById("sidebar-search-input");
+    let filter = input.value.toLowerCase();
+    let menuItems = document.querySelectorAll(".page-sidebar-menu .nav-item");
+
+    menuItems.forEach(function (item) {
+        let text = item.textContent || item.innerText;
+        let match = text.toLowerCase().includes(filter);
+        let subMenu = item.querySelector(".sub-menu");
+        let arrow = item.querySelector(".arrow");
+
+        if (match) {
+            item.style.display = "";
+            if (subMenu) {
+                subMenu.style.display = "block";
+                if (arrow) arrow.classList.add("open");
+            }
+        } else {
+            item.style.display = "none";
+        }
+    });
+
+    if (filter === "") {
+        document.querySelectorAll(".sub-menu").forEach(subMenu => {
+            subMenu.style.display = "none";
+        });
+        document.querySelectorAll(".arrow.open").forEach(arrow => {
+            arrow.classList.remove("open");
+        });
+    }
+}
+
+</script>
+<style>
+    .page-sidebar-menu > .nav-item > a {
+    font-weight: bold !important;
+    font-family: 'Poppins', sans-serif;
+    }
+    #sidebar-search-input {
+        border: 2px solidrgb(0, 255, 30); 
+        background-color:rgb(248, 255, 240); 
+        color: #333;
+        font-weight: bold;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        width: 100%; 
+    }
+
+    #sidebar-search-input:focus {
+        border-color: #ff5722; 
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+        background-color: #fff;
+        transition: all 0.3s ease-in-out;
+        transform: scale(1.05);
+    }
+</style>

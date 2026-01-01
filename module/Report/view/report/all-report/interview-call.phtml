@@ -1,0 +1,290 @@
+<?php
+
+$this->headLink()
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'))
+         ->appendStylesheet($this->basePath('assets/global/plugins/nepalidate/nepali.datepicker.v2.1.min.css'))
+        ->appendStylesheet($this->basePath('dropzone/dropzone.min.css'));
+
+$this->headScript() 
+        ->appendFile($this->basePath('assets/global/plugins/nepalidate/nepali.datepicker.v2.1.min.js'))
+        ->appendFile($this->basePath('js/nepali-datepicker-ext.js'))
+        ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+        ->appendFile($this->basePath('js/Report/AllReport/interview-call.js'));
+?>
+
+<?php
+
+$this->headLink()
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'))
+         ->appendStylesheet($this->basePath('assets/global/plugins/nepalidate/nepali.datepicker.v2.1.min.css'))
+        ->appendStylesheet($this->basePath('dropzone/dropzone.min.css'));
+
+$this->headScript() 
+        ->appendFile($this->basePath('assets/global/plugins/nepalidate/nepali.datepicker.v2.1.min.js'))
+        ->appendFile($this->basePath('js/nepali-datepicker-ext.js'))
+        ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+        ->appendFile($this->basePath('js/Report/AllReport/interview-call.js'));
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+    }
+
+    table {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-container::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .evaluator-form {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .evaluator-form h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+  }
+
+  .evaluator-form hr {
+    margin-top: 20px;
+    border: none;
+    height: 1px;
+    background: #ddd;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+  }
+  .close-evaluator {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff0000;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.close-evaluator:hover {
+  background-color: #ffdddd;
+  transform: scale(1.2);
+}
+
+.close-evaluator:focus {
+  outline: none;
+}
+
+
+    label {
+      display: block;
+      font-size: 2em !important;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .large {
+      font-size: 15px !important;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: auto;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <form id="statusForm" method="post" action="<?= $this->url("allreport", ['action' => 'interviewCall']) ?>">
+      <div class="form-group">
+        <input type="text" hidden id="id" name="id" value="<?= $id ?>">
+        <label for="full_name" class="large">Mr. / Mrs. Full Name</label>
+        <input type="text" name="full_name" value="<?= isset($fullName[0]['FULL_NAME']) ? htmlspecialchars($fullName[0]['FULL_NAME']) : ''; ?>" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="permanent_address" class="large">Permanent Address</label>
+        <input type="text" name="permanent_address" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="temporary_address" class="large">Temporary Address</label>
+        <input type="text" name="temporary_address" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="contact_no" class="large">Contact No.</label>
+        <input type="text" name="contact_no" value="<?= isset($fullName[0]['CONTACT_NUMBER']) ? htmlspecialchars($fullName[0]['CONTACT_NUMBER']) : ''; ?>" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="previous_company" class="large">Previous Company</label>
+        <input type="text" name="previous_company" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="previous_position" class="large">Previous Position</label>
+        <input type="text" name="previous_position" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="previous_salary" class="large">Previous Salary</label>
+        <input type="number" name="previous_salary" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="job_shifting_reason" class="large">Job Shifting Reason</label>
+        <textarea name="job_shifting_reason" rows="4" cols="40"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="vehicle_yn" class="large">Vehicle Y/N</label>
+        <select name="vehicle_yn">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="expected_salary" class="large">Expected Salary</label>
+        <input type="number" name="expected_salary" value="">
+      </div>
+
+      <div class="form-group">
+        <label for="negotiation" class="large">Negotiation</label>
+        <select name="negotiation">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="joiningDateEnglish" class="large">Expected Joining Date</label>
+        <input type="text" id="joiningDateEnglish" name="joining_date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="remarks" class="large">Remarks</label>
+        <textarea name="remarks" rows="4" cols="40"></textarea>
+      </div>
+
+      <table class="table table-striped table-bordered table-hover no-footer customtbl" id="qualificationTbl">
+  <tr>
+    <td colspan="8">
+      <a href="javascript:;" id="add-evaluator" class="btn btn-block blue">Add Evaluator <i class="fa fa-plus"></i></a>
+    </td>
+  </tr>
+  <tr id="evaluatorFields" style="display: none;">
+    <td colspan="8" id="evaluatorContainer">
+      <!-- Evaluator Form with Close Button -->
+      <div class="evaluator-form">
+        <h3>Evaluator <span class="close-evaluator" style="cursor: pointer;">&times;</span></h3>
+        <div class="form-group evaluator">
+          <label for="evaluator_name" class="large">Evaluator Name</label>
+          <input type="text" name="evaluator_name" placeholder="Enter Evaluator Name" class="form-control">
+        </div>
+
+        <div class="form-group evaluator">
+          <label for="evaluator_remarks" class="large">Evaluator Remarks</label>
+          <textarea name="evaluator_remarks" placeholder="Enter Evaluator Remarks" class="form-control"></textarea>
+        </div>
+
+        <div class="form-group evaluator">
+          <label for="evaluator_rating" class="large">Evaluator Rating</label>
+          <select name="evaluator_rating" class="form-control">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

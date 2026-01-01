@@ -1,0 +1,75 @@
+<?php
+$this->headScript()->appendFile($this->basePath('js/setup/vacancy/add.js'));
+
+$this->headScript()
+        ->appendFile($this->basePath('assets/global/plugins/bootstrap-summernote/summernote.min.js'));
+        // ->appendFile($this->basePath('js/Notification/Email/index.js'));
+$this->headLink()
+        ->appendStylesheet($this->basePath('assets/global/plugins/bootstrap-summernote/summernote.css'));
+?>
+
+?>
+<?php
+
+$position = $form->get('position');
+$avaliability = $form->get('avaliability');
+$description = $form->get('description');
+$submit = $form->get('submit');
+
+$form->setAttribute('action', $this->url('vacancy', ['action' => 'add']));
+$form->prepare();
+?>
+
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\Vacancy')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>New Entry
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php print $this->form()->openTag($form); ?>
+                <div class=" row">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <?php print $this->formLabel($position); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <?php print $this->formElement($position); ?>
+                            <?php print $this->formElementErrors()->render($position, ['class' => 'help-block']); ?>
+                            <span class="errorMsg" style="font-size:11px; color:red;"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <?php print $this->formLabel($avaliability); ?>
+                            <span class="required" aria-required="true">*</span>
+                            <?php print $this->formElement($avaliability); ?>
+                            <?php print $this->formElementErrors()->render($avaliability, ['class' => 'help-block']); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable-line">
+                    <div class="tab-content">
+                        <div class="form-group">
+                            <label class="control-label">Description</label>
+                            <div class="summernote">
+                            </div>
+                           <input name="description" type="hidden" value="<?php echo rawurlencode($vacancy->description); ?>" >
+                        </div>
+                    </div>
+                </div>
+
+                <?php print $this->formSubmit($submit); ?>
+                <?php print $this->form()->closeTag(); ?>
+            </div>
+        </div>
+    </div>
+</div>

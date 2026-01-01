@@ -1,0 +1,78 @@
+<?php
+$this->headScript()->appendFile($this->basePath('js/setup/performance/edit.js'));
+
+$form->setAttribute('role', 'form');
+$form->setAttribute('id', 'performance-form');
+
+$indexId = $form->get('indexId');
+$percentRange = $form->get('percentRange');
+$percentDesc = $form->get('percentDesc');
+
+$submit = $form->get('submit');
+$submit->setAttribute('value', 'SUBMIT');
+
+$form->setAttribute('action', $this->url('performance', ['action' => 'edit', 'id' => $id]));
+
+if ($this->messages) {
+    print '<ul class="help-block bg-danger" style="background:#f3e250;">';
+    foreach ($this->messages as $message) {
+        print '<li>' . $message . '</li>';
+    }
+    print '</ul>';
+}
+
+$form->prepare();
+?>
+<script>
+    document.url = '<?= $this->url("restful", ["action" => "edit"]) ?>';
+    document.url = '<?= $this->url("restful", ["action" => "index"]) ?>';
+</script>
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\performance')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>New Entry
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php
+                print $this->form()->openTag($form);
+                ?>
+
+            <div class="row" style="margin-bottom: 5rem;">
+            
+            <div class=" row">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <?= $this->formLabel($percentRange) ?>
+                            <?= $this->formElement($percentRange); ?>
+                            <?= $this->formElementErrors()->render($percentRange, ['class' => 'help-block']) ?>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <?= $this->formLabel($percentDesc) ?>
+                            <span class="required" aria-required="true">*</span>
+                            <?= $this->formElement($percentDesc); ?>
+                            <?= $this->formElementErrors()->render($percentDesc, ['class' => 'help-block']) ?>
+                            <span class="errorMsg" style="font-size:11px; color:red;"></span>
+                        </div>
+                    </div>
+            </div>
+            </div>
+                <?php
+                print $this->formSubmit($submit);
+                print $this->form()->closeTag();
+                ?>
+            </div>
+
+        </div>
+    </div>
+</div>

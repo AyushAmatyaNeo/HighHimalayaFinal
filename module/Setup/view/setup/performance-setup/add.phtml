@@ -1,0 +1,81 @@
+<?php
+$this->headLink()
+->appendStylesheet($this->basePath('dropzone/dropzone.min.css'));
+$this->headScript()->appendFile($this->basePath('dropzone/dropzone.min.js'));
+$this->headScript()->appendFile($this->basePath('js/setup/performance-setup/add.js'));
+
+$form->setAttribute('role', 'form');
+$form->setAttribute('id', 'performance-form');
+
+$performanceId = $form->get('performanceId');
+$categoryName = $form->get('categoryName');
+$credit = $form->get('credit');
+
+$submit = $form->get('submit');
+$submit->setAttribute('value', 'SUBMIT');
+
+$form->setAttribute('action', $this->url('performanceSetup', ['action' => 'add']));
+
+if ($this->messages) {
+    print '<ul class="help-block bg-danger" style="background:#f3e250;">';
+    foreach ($this->messages as $message) {
+        print '<li>' . $message . '</li>';
+    }
+    print '</ul>';
+}
+
+$form->prepare();
+?>
+<script>
+    document.url = '<?= $this->url("restful", ["action" => "add"]) ?>';
+    document.url = '<?= $this->url("restful", ["action" => "index"]) ?>';
+</script>
+<div class="page-bar">
+<?= $this->navigation('Zend\Navigation\performanceSetup')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>New Entry
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php
+                print $this->form()->openTag($form);
+                ?>
+
+            <div class="row" style="margin-bottom: 5rem;">
+            
+                    <div class=" row">
+                    <div class="col-sm-4">
+                    <div class="form-group <?= empty($categoryName->getMessages()) ? "" : "error" ?>">
+                        <?php print $this->formLabel($categoryName) ?>
+                        <span class="required" aria-required="true">*</span>
+                        <input type="text" name="categoryName" id="categoryName" required="required" class="form-control" placeholder="Please enter category">
+                    </div>
+                    </div>
+                    <div class="col-sm-4">
+                    <div class="form-group <?= empty($credit->getMessages()) ? "" : "error" ?>">
+                    <?php print $this->formLabel($credit) ?>
+                    <span class="required" aria-required="true">*</span>
+                    <input type="text" name="credit" id="credit" required="required" class="form-control" placeholder="Please enter credit">
+                    </div>
+                    <?php print $this->formElementErrors()->render($credit, ['class' => 'help-block error']); ?>
+                    </div>
+                </div>
+            </div>
+
+                <?php
+                print $this->formSubmit($submit);
+                print $this->form()->closeTag();
+                ?>
+            </div>
+
+        </div>
+    </div>
+</div>

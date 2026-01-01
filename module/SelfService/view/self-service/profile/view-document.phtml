@@ -1,0 +1,199 @@
+<?php
+$this->headScript()->appendFile($this->basePath('js/setup/employee/document.js'));
+$this->headScript()
+    ->appendFile($this->basePath('assets/global/plugins/bootstrap-summernote/summernote.min.js'));
+$this->headLink()
+    ->appendStylesheet($this->basePath('assets/global/plugins/bootstrap-summernote/summernote.css'));
+?>
+
+
+<div class="page-bar">
+    <?= $this->navigation('Zend\Navigation\letterSetup')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb') ?>
+</div>
+
+<style>
+    .letter-head {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        color: #000000;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    .letter-head img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .letter-content {
+        position: absolute;
+        top: 50mm;
+        left: 10mm;
+        right: 10mm;
+        bottom: 10mm;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 61px;
+        height: 46px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: -12px;
+        left: 0;
+        right: 0;
+        bottom: 13px;
+        background-color: #ccc;
+        transition: 0.4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 15px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(26px);
+    }
+
+    /* Rounded slider */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    /* Initially hide the inputs */
+    .custom-style-inputs {
+        display: none;
+    }
+
+    .input-container {
+        display: flex;
+        align-items: center;
+        color: #FFFFFF;
+        background-color: #2196F3;
+    }
+
+    .input-container button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        font-size: 1.25rem;
+        border-radius: 0;
+    }
+
+    .input-container input {
+        text-align: center;
+        height: 2.5rem;
+    }
+
+    .input-container .btn {
+        border-radius: 0;
+    }
+
+    .page-number {
+        position: absolute;
+        bottom: 77px;
+        /* Adjust as necessary */
+        left: 93%;
+        transform: translateX(-50%);
+        z-index: 999;
+        text-align: right;
+    }
+</style>
+
+<div class="row margin-top-20">
+    <div class="col-sm-12">
+        <div class="portlet box custom-box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user"></i>My Document
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <input type="hidden" value="<?= $letterSetup['LETTER_TITLE'] ?> " id="docName">
+                <div class="tabbable-line" style="display: none;">
+                    <div class="tab-content">
+                        <?php if (count($descriptions) > 0) : ?>
+                            <?php foreach ($descriptions as $key => $description) : ?>
+                                <div class="form-group">
+                                    <label class="control-label">Page <?= $key + 1 ?> </label>
+                                    <div class="summernote" id="summernote-<?= $key ?>">
+                                    </div>
+                                    <input name="description_<?= $key ?>" type="hidden" id="description-<?= $key ?>" value="<?= rawurlencode($description); ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="checkbox" style="display: none;" <?= $letterSetup['IS_CUSTOM'] == 'E' ? 'checked' : '' ?> id="CustomStyle">
+
+                    <div id="custom-style-inputs" class="custom-style-inputs">
+                        <input value="<?= $letterSetup['TOP_POSITION'] ?>" id="top" />
+                        <input value="<?= $letterSetup['BOTTOM_POSITION'] ?>" id="bottom" />
+                        <input value="<?= $letterSetup['LEFT_POSITION'] ?>" id="left" />
+                        <input value="<?= $letterSetup['RIGHT_POSITION'] ?>" id="right" />
+                    </div>
+                </div>
+                <label for=""><?= $letterSetup['LETTER_TITLE'] ?></label><br>
+                <button id="downloadPdf" class="btn btn-secondary btn-primary btn-xs" style="margin-bottom: 5px;">Download Document</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+$imgUrl = $this->basePath('uploads/' . $company_logo);
+?>
+<input type="hidden" id="ImageUrl" value="<?= $imgUrl ?>">
+<div id="letter-head-container">
+    <?php if (count($descriptions) > 0) : ?>
+        <?php foreach ($descriptions as $key => $description) : ?>
+            <div class="letter-head">
+                <img src="<?= $this->basePath('uploads/' . $company_logo); ?>" alt="Letterhead">
+                <div id="rendered-content-<?= $key ?>" class="letter-content">
+                    <?= $description ?>
+                </div>
+                <label for="" class="page-number">Page <?= $key + 1 ?></label>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+<script type="text/javascript">
+    var variables = <?= json_encode($variables) ?>;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>

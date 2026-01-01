@@ -1,0 +1,35 @@
+RewriteEngine On
+
+# --- Block dangerous file types only inside /uploads/ ---
+RewriteRule ^uploads/.*\.(php|phtml|php[0-9]*|phar|pl|py|pyc|pyo|rb|jsp|jspx|asp|aspx|cgi|exe|dll|scr|msi|bat|cmd|com|sh|bash|zsh|csh|ksh|ps1|psm1|psc1|psd1|vbs?|vbe|wsh|hta|jar|war|ear|class|bin|elf|so|pif|scf|lnk|osx|dmg|apk|xapk|ipa|deb|rpm|cab|iso|img|sfx|run|wsf|swf|shtml|shtm)$ - [F,NC,L]
+
+# --- Normalize multiple slashes (optional but recommended) ---
+RewriteCond %{THE_REQUEST} //
+RewriteRule .* %{REQUEST_URI} [R=301,L]
+
+# --- Allow specific safe file types in /uploads/ ---
+RewriteRule ^uploads/.*\.(jpg|jpeg|png|gif|pdf|doc|docx|xls|xlsx|txt|csv)$ - [L,NC]
+
+# --- Block all other access to /uploads/ (anything not matching safe types) ---
+RewriteRule ^uploads/ - [F,L,NC]
+
+# --- Block direct access to static asset folders unless coming from your site or localhost ---
+RewriteCond %{HTTP_REFERER} ^$ [OR]
+# RewriteCond %{HTTP_REFERER} !^https?://(www\.)?(yourdomain\.com|localhost(:[0-9]+)?) [NC]
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?(yourdomain\.com|localhost(:[0-9]+)?|192\.168\.2\.124(:[0-9]+)?) [NC]
+RewriteRule ^(assets|css|js|img)/ - [F,L,NC]
+
+# --- Serve existing files and directories ---
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [L]
+
+# --- Forward non-existent files to index.php ---
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [NC,L]
+
+# --- Handle base path ---
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+RewriteRule ^(.*) - [E=BASE:%1]
+RewriteRule ^(.*)$ %{ENV:BASE}/index.php [L]

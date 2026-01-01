@@ -1,0 +1,163 @@
+<?php
+//$data = $this->data ?? [];
+$this->headLink()
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'));
+$this->headScript()
+        ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'));
+//         ->appendFile($this->basePath('js/Report/AllReport/userVacancy.js'));
+?>
+
+<?php if ($this->messages) { ?>
+    <script>
+        document.messages =<?php echo json_encode($this->messages); ?>
+    </script>
+<?php } ?>
+
+<?php
+//$data = $this->data ?? [];
+$this->headLink()
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+        ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'));
+$this->headScript()
+        ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'));
+//         ->appendFile($this->basePath('js/Report/AllReport/userVacancy.js'));
+?>
+
+<?php if ($this->messages) { ?>
+    <script>
+        document.messages =<?php echo json_encode($this->messages); ?>
+    </script>
+<?php } ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Tracker</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    
+    .container {
+        width: 80%;
+        max-width: 680px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    
+    .form-group {
+        margin-bottom: 1em;
+    }
+    
+    label {
+        font-weight: bold;
+        margin-bottom: .5em;
+        display: block;
+    }
+    
+    input[type="text"], input[type="file"] {
+        width: 90%;
+        padding: 10px;
+        margin-top: 0.5em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #2F9E1E;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    
+    input[type="submit"]:hover {
+        font-weight: bold;
+        background-color: #2F9E1E;
+    }
+    
+    .loading-indicator {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .container {
+            width: 90%;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Resume Tracker</h2>
+    <form id="uploadForm" method="post">
+        <div class="form-group">
+            <label for="job_description">Job Description:</label>
+            <input type="text" id="job_description" name="job_description" placeholder="Paste the job description here...">
+        </div>
+        <div class="form-group">
+            <label for="file_path">Resume File:</label>
+            <input type="file" id="file_path" name="file_path">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Analyze Resume">
+        </div>
+    </form>
+
+    <div class="loading-indicator">Analyzing Your Resume...</div>
+    <div class="response-dialog"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#uploadForm').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading-indicator').show();
+            var form = new FormData(this);
+
+            $.ajax({
+                url: "http://202.79.34.39:8812/analyze_resume",
+                method: "POST",
+                timeout: 0,
+                processData: false,
+                contentType: false,
+                data: form,
+                success: function(response) {
+                    $('.loading-indicator').hide();
+                    response = response.replace(/(\d\.\s)/g, "<br><strong>$1</strong>");
+                    $('.response-dialog').html(response).show();
+                },
+                error: function() {
+                    $('.loading-indicator').hide();
+                    $('.response-dialog').html("An error occurred while processing your request. Please try again.").show();
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

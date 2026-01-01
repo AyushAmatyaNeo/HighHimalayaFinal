@@ -1,0 +1,87 @@
+<?php
+//$data = $this->data ?? [];
+// $this->headLink()
+//         ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.common.min.css'))
+//         ->appendStylesheet($this->basePath('telerik_kendoui/styles/kendo.default.min.css'));
+$this->headScript()
+        // ->appendFile($this->basePath('jszip/dist/jszip.min.js'))
+        // ->appendFile($this->basePath('telerik_kendoui/js/kendo.all.min.js'))
+        ->appendFile($this->basePath('js/Report/AllReport/application-edit.js'));
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      /* display: flex; */
+      align-items: center;
+      justify-content: center;
+      height: 50%;
+      width: 100%;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+     
+      margin-bottom: 8px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <form id="statusForm"  method="post" action="<?= $this->url("allreport",['action'=>'rejectApplication']) ?>">
+      <div class="row">
+        <div class="col-sm-4">
+          <input type="text" hidden id="id" name="id" value=<?=$id?>>
+          <label for="status" style="font-size: 16px !important;">Status</label>
+      
+          <select id="status" name="status" required>
+          <?php foreach ($vacancyStatus as $value => $label): ?>
+              <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+          <?php endforeach; ?>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" id='submitBtn'>Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

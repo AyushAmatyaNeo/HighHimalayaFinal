@@ -1,0 +1,26 @@
+RewriteEngine On
+
+# Normalize multiple slashes (optional but good practice)
+RewriteCond %{THE_REQUEST} //
+RewriteRule .* %{REQUEST_URI} [R=301,L]
+
+# Allow only specific file types in /uploads/
+RewriteRule ^/*uploads/.*\.(jpg|jpeg|png|gif|pdf|doc|docx|xls|xlsx|zip)$ - [L,NC]
+
+# Block all other access to /uploads/
+RewriteRule ^/*uploads/ - [F,L]
+
+# If the requested filename exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [L]
+
+# If the requested file does not exist, forward to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [NC,L]
+
+# Handle subdirectory/base path issues
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+RewriteRule ^(.*) - [E=BASE:%1]
+RewriteRule ^(.*)$ %{ENV:BASE}/index.php [L]
