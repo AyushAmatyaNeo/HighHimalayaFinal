@@ -87,7 +87,7 @@ class LetterSetupRepository implements RepositoryInterface
                 ls.LEFT_POSITION AS LEFT_POSITION,
                 ls.RIGHT_POSITION AS RIGHT_POSITION,
                 ls.IS_CUSTOM AS IS_CUSTOM,
-                DBMS_LOB.SUBSTR(lsd.description, 4000, 1) AS description 
+                lsd.description AS description 
             FROM 
                 hris_letter_setup ls
             LEFT JOIN 
@@ -118,7 +118,7 @@ class LetterSetupRepository implements RepositoryInterface
                 ];
             }
 
-            $collection[$letterSetupId]['DESCRIPTIONS'][] = $row['DESCRIPTION'];
+            $collection[$letterSetupId]['DESCRIPTIONS'][] = $row['DESCRIPTION']->load();
         }
 
         if (empty($collection)) {
@@ -231,7 +231,7 @@ EOT;
         return Helper::extractDbData($result);
     }
 
-    public function fetchEmployeeList($empIds)
+    public function fetchEmployeeList($empIds, $letterId)
     {
         $empIds = array_map('intval', $empIds);
         $empIdsList = implode(',', $empIds);
@@ -239,13 +239,17 @@ EOT;
         $sql = "SELECT 
             E.FULL_NAME,
             E.EMPLOYEE_ID,
+            LS.LETTER_TITLE,
+            L.LETTER_SETUP_ID,
             D.DEPARTMENT_NAME,
             B.BRANCH_NAME,
             DE.DESIGNATION_TITLE,
             C.COMPANY_NAME
-
-        FROM 
-            HRIS_EMPLOYEES E
+        FROM HRIS_EMPLOYEE_LETTER_ASSIGN L
+        LEFT JOIN HRIS_LETTER_SETUP LS
+            ON LS.LETTER_SETUP_ID = L.LETTER_SETUP_ID
+        LEFT JOIN HRIS_EMPLOYEES E
+            ON E.EMPLOYEE_ID = L.EMPLOYEE_ID
         LEFT JOIN 
             HRIS_DEPARTMENTS D
         ON 
@@ -263,7 +267,8 @@ EOT;
         ON 
             E.COMPANY_ID=C.COMPANY_ID
         WHERE 
-            E.EMPLOYEE_ID IN ($empIdsList) ";
+            E.EMPLOYEE_ID IN ($empIdsList) 
+        AND L.LETTER_SETUP_ID = $letterId";
 
         $statement = $this->adapter->query($sql);
         $result = $statement->execute();
@@ -274,7 +279,7 @@ EOT;
 
     public function fetchEmployeeLetterList($empId)
     {
-        
+
         $sql = "SELECT 
                     HLS.LETTER_TITLE  
                 FROM 
@@ -285,11 +290,9 @@ EOT;
                     HLA.LETTER_SETUP_ID = HLS.LETTER_SETUP_ID
                 WHERE 
                     HLA.EMPLOYEE_ID = $empId";
-        
+
         $statement = $this->adapter->query($sql);
         $result = $statement->execute();
         return Helper::extractDbData($result);
     }
-    
-    
 }

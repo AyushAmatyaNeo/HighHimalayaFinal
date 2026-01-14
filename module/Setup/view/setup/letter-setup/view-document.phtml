@@ -30,7 +30,7 @@ $this->headLink()
 
     .letter-content {
         position: absolute;
-        top: 35mm;
+        top: 40mm;
         left: 10mm;
         right: 10mm;
         bottom: 10mm;
@@ -192,6 +192,7 @@ $imgUrl = $this->basePath('uploads/' . $company_logo);
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+
 <script type="text/javascript">
     var variables = <?= json_encode($variables) ?>;
 </script>

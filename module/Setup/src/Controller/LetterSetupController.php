@@ -87,7 +87,7 @@ class LetterSetupController extends HrisController
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-            $postedData = $request->getPost(); 
+            $postedData = $request->getPost();
 
             $this->form->setData($postedData);
             if ($this->form->isValid()) {
@@ -107,7 +107,7 @@ class LetterSetupController extends HrisController
                 $letterSetupId = $letterSetup->letterSetupId;
 
                 $descriptions = [];
-                foreach ($postedData as $key => $value) { 
+                foreach ($postedData as $key => $value) {
                     if (strpos($key, 'description_') === 0) {
                         $descriptions[] = $value;
                     }
@@ -255,7 +255,7 @@ class LetterSetupController extends HrisController
                 return $this->redirect()->toRoute("letterSetup");
             }
         }
-        $fetchData = $this->repository->fetchById($id); 
+        $fetchData = $this->repository->fetchById($id);
         // dd($fetchData);
         $letterSetup->exchangeArrayFromDB($fetchData);
         $result = $this->repository->fetchSubLetterAll($id);
@@ -418,7 +418,7 @@ class LetterSetupController extends HrisController
                 throw new Exception("The request should be of type post");
             }
             $data = $request->getPost();
-            $empList = $this->repository->fetchEmployeeList($data['empIds']);
+            $empList = $this->repository->fetchEmployeeList($data['empIds'], $data['letterId']);
             // dd($empList);
             return new JsonModel(['success' => true, 'data' => $empList, 'error' => '']);
         } catch (Exception $e) {
@@ -439,5 +439,41 @@ class LetterSetupController extends HrisController
         } catch (Exception $e) {
             return new JsonModel(['success' => false, 'data' => [], 'error' => $e->getMessage()]);
         }
+    }
+
+    public function viewDocumentAction()
+    {
+        $id = (int) $this->params()->fromRoute("id");
+        $empId = (int) $this->params()->fromRoute("empId");
+
+        $letterSetupRepository = new LetterSetupRepository($this->adapter);
+        $fetchData = $letterSetupRepository->fetchById($id);
+
+        $image = $this->getFileInfo($this->adapter, 1);
+        $company_logo = $image['fileName'];
+
+        $processedDescriptions = [];
+        foreach ($fetchData['DESCRIPTIONS'] as $description) {
+            $processedDescriptions[] = $this->replacePlaceholders($description, $empId);
+        }
+
+        return [
+            'id' => $id,
+            'descriptions' => $processedDescriptions,
+            'letterSetup' => $fetchData,
+            'company_logo' => $company_logo,
+            'customRender' => Helper::renderCustomView(),
+            'variables' => $this->variables->getVariables($empId),
+        ];
+    }
+
+    public function replacePlaceholders($text, $empId)
+    {
+        $variables = $this->variables->getVariables($empId);
+        foreach ($variables as $key => $value) {
+            $text = str_replace('[' . $key . ']', $value, $text);
+        }
+
+        return $text;
     }
 }

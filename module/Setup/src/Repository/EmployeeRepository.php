@@ -250,6 +250,7 @@ class EmployeeRepository extends HrisRepository implements RepositoryInterface
                   E.ID_PASSPORT_NO                                                  AS ID_PASSPORT_NO,
                   INITCAP(TO_CHAR(E.ID_PASSPORT_EXPIRY, 'DD-MON-YYYY'))             AS ID_PASSPORT_EXPIRY,
                   INITCAP(TO_CHAR(E.JOIN_DATE, 'DD-MON-YYYY'))                      AS JOIN_DATE,
+                  E.GROSS_SALARY                                                    AS GROSS_SALARY,
                   E.SALARY                                                          AS SALARY,
                   E.SALARY_PF                                                       AS SALARY_PF,
                   E.REMARKS                                                         AS REMARKS,
@@ -411,7 +412,7 @@ class EmployeeRepository extends HrisRepository implements RepositoryInterface
 
 
     public function edit(Model $model, $id)
-    {
+    { 
         $tempArray = $model->getArrayCopyForDB();
         if (isset($tempArray['WOH_FLAG']) && $tempArray['WOH_FLAG'] == null) {
             // if ($tempArray['WOH_FLAG'] == null) {
@@ -525,6 +526,7 @@ class EmployeeRepository extends HrisRepository implements RepositoryInterface
               E.ID_PASSPORT_NO                                                  AS ID_PASSPORT_NO,
               INITCAP(TO_CHAR(E.ID_PASSPORT_EXPIRY, 'DD-MON-YYYY'))             AS ID_PASSPORT_EXPIRY,
               INITCAP(TO_CHAR(E.JOIN_DATE, 'DD-MON-YYYY'))                      AS JOIN_DATE,
+              E.GROSS_SALARY                                                    AS GROSS_SALARY,
               E.SALARY                                                          AS SALARY,
               E.SALARY_PF                                                       AS SALARY_PF,
               E.REMARKS                                                         AS REMARKS,
@@ -733,6 +735,7 @@ class EmployeeRepository extends HrisRepository implements RepositoryInterface
                   FUNT.FUNCTIONAL_TYPE_EDESC                                        AS FUNCTIONAL_TYPE_EDESC,
                   FUNL.FUNCTIONAL_LEVEL_NO                                          AS FUNCTIONAL_LEVEL_NO,
                   FUNL.FUNCTIONAL_LEVEL_EDESC                                       AS FUNCTIONAL_LEVEL_EDESC,
+                  E.GROSS_SALARY                                                    AS GROSS_SALARY,
                   E.SALARY                                                          AS SALARY,
                   E.SALARY_PF                                                       AS SALARY_PF,
                   E.REMARKS                                                         AS REMARKS,
@@ -1052,6 +1055,7 @@ class EmployeeRepository extends HrisRepository implements RepositoryInterface
                   E.ID_PASSPORT_NO                                                  AS ID_PASSPORT_NO,
                   INITCAP(TO_CHAR(E.ID_PASSPORT_EXPIRY, 'DD-MON-YYYY'))             AS ID_PASSPORT_EXPIRY,
                   INITCAP(TO_CHAR(E.JOIN_DATE, 'DD-MON-YYYY'))                      AS JOIN_DATE,
+                  E.GROSS_SALARY                                                    AS GROSS_SALARY,
                   E.SALARY                                                          AS SALARY,
                   E.SALARY_PF                                                       AS SALARY_PF,
                   E.REMARKS                                                         AS REMARKS,
@@ -1345,6 +1349,7 @@ E.EMPLOYEE_ID                                                AS EMPLOYEE_ID,
               E.ID_PASSPORT_NO                                                  AS ID_PASSPORT_NO,
               INITCAP(TO_CHAR(E.ID_PASSPORT_EXPIRY, 'DD-MON-YYYY'))             AS ID_PASSPORT_EXPIRY,
               INITCAP(TO_CHAR(E.JOIN_DATE, 'DD-MON-YYYY'))                      AS JOIN_DATE,
+              E.GROSS_SALARY                                                    AS GROSS_SALARY,
               E.SALARY                                                          AS SALARY,
               E.SALARY_PF                                                       AS SALARY_PF,
               E.REMARKS                                                         AS REMARKS,
@@ -1567,6 +1572,7 @@ GROUP BY IARA.EMPLOYEE_ID) AA ON (AA.EMPLOYEE_ID=E.EMPLOYEE_ID)
                   FUNT.FUNCTIONAL_TYPE_EDESC                                        AS FUNCTIONAL_TYPE_EDESC,
                   FUNL.FUNCTIONAL_LEVEL_NO                                          AS FUNCTIONAL_LEVEL_NO,
                   FUNL.FUNCTIONAL_LEVEL_EDESC                                       AS FUNCTIONAL_LEVEL_EDESC,
+                  E.GROSS_SALARY                                                    AS GROSS_SALARY,
                   E.SALARY                                                          AS SALARY,
                   E.SALARY_PF                                                       AS SALARY_PF,
                   E.REMARKS                                                         AS REMARKS

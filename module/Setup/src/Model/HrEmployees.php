@@ -69,6 +69,7 @@ class HrEmployees extends Model
     public $idPassportNo;
     public $idPassportExpiry;
     public $joinDate;
+    public $grossSalary;
     public $salary;
     public $salaryPf;
     public $remarks;
@@ -199,6 +200,7 @@ class HrEmployees extends Model
     const ID_PASSPORT_NO = "ID_PASSPORT_NO";
     const ID_PASSPORT_EXPIRY = "ID_PASSPORT_EXPIRY";
     const JOIN_DATE = "JOIN_DATE";
+    const GROSS_SALARY = "GROSS_SALARY";
     const SALARY = "SALARY";
     const SALARY_PF = "SALARY_PF";
     const REMARKS = "REMARKS";
@@ -330,6 +332,7 @@ class HrEmployees extends Model
         'idPassportNo' => self::ID_PASSPORT_NO,
         'idPassportExpiry' => self::ID_PASSPORT_EXPIRY,
         'joinDate' => self::JOIN_DATE,
+        'grossSalary' => self::GROSS_SALARY,
         'salary' => self::SALARY,
         'salaryPf' => self::SALARY_PF,
         'remarks' => self::REMARKS,

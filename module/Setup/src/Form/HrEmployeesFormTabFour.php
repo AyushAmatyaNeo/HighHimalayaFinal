@@ -19,7 +19,17 @@ class HrEmployeesFormTabFour extends Model
 
     /**
      * @Annotation\Required(false)
-     * @Annotation\Type("Zend\Form\Element\Number")
+     * @Annotation\Type("Zend\Form\Element\text")
+     * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
+     * @Annotation\Options({"label":"Gross Salary"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"max":"9"}})
+     * @Annotation\Attributes({ "id":"grossSalary", "class":"form-control","step":"0.01","min":"0"})
+     */
+    public $grossSalary;
+
+    /**
+     * @Annotation\Required(false)
+     * @Annotation\Type("Zend\Form\Element\text")
      * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
      * @Annotation\Options({"label":"Salary"})
      * @Annotation\Validator({"name":"StringLength", "options":{"max":"9"}})
@@ -29,9 +39,9 @@ class HrEmployeesFormTabFour extends Model
 
     /**
      * @Annotation\Required(false)
-     * @Annotation\Type("Zend\Form\Element\Number")
+     * @Annotation\Type("Zend\Form\Element\text")
      * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
-     * @Annotation\Options({"label":"Salary PF"})
+     * @Annotation\Options({"label":"Salary PF (10%)"})
      * @Annotation\Validator({"name":"StringLength", "options":{"max":"9"}})
      * @Annotation\Attributes({ "id":"salaryPf", "class":"form-control","min":"1" })
      */
@@ -212,7 +222,7 @@ class HrEmployeesFormTabFour extends Model
 
     /**
      * @Annotation\Required(false)
-     * @Annotation\Type("Zend\Form\Element\Number")
+     * @Annotation\Type("Zend\Form\Element\text")
      * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
      * @Annotation\Options({"label":"Allowance"})
      * @Annotation\Validator({"name":"StringLength", "options":{"max":"9"}})
@@ -277,7 +287,7 @@ class HrEmployeesFormTabFour extends Model
 
     /**
      * @Annotation\Required(false)
-     * @Annotation\Type("Zend\Form\Element\Number")
+     * @Annotation\Type("Zend\Form\Element\text")
      * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
      * @Annotation\Options({"label":"Dearness Allowance"})
      * @Annotation\Validator({"name":"StringLength", "options":{"max":"9"}})
@@ -307,9 +317,9 @@ class HrEmployeesFormTabFour extends Model
 
     /**
      * @Annotation\Required(false)
-     * @Annotation\Type("Zend\Form\Element\Number")
+     * @Annotation\Type("Zend\Form\Element\text")
      * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
-     * @Annotation\Options({"label":"Gratuity"})
+     * @Annotation\Options({"label":"Gratuity (8.33%)"})
      * @Annotation\Validator({"name":"StringLength", "options":{"max":"9"}})
      * @Annotation\Attributes({ "id":"gratuity", "class":"form-control","step":"0.01","min":"0"})
      */
@@ -336,6 +346,7 @@ class HrEmployeesFormTabFour extends Model
 
     public $mappings = [
         'joinDate' => 'JOIN_DATE',
+        'grossSalary' => 'GROSS_SALARY',
         'salary' => 'SALARY',
         'salaryPf' => 'SALARY_PF',
         'branchId' => 'BRANCH_ID',

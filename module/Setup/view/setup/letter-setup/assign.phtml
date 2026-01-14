@@ -21,6 +21,7 @@ $this->headScript()
     document.assignLetter = '<?php echo $this->url("letterSetup", ["action" => "assign"]); ?>';
     document.viewEmpList = '<?php echo $this->url("letterSetup", ["action" => "viewEmpList"]); ?>';
     document.empLetters = '<?php echo $this->url("letterSetup", ["action" => "empLetters"]); ?>';
+    document.viewDocumentUrl = "<?= $this->url('viewDocument', ['action' => 'viewDocument']) ?>";
 
     document.employeeLists = <?php echo json_encode($employees); ?>;
     document.acl = <?php echo json_encode($acl); ?>;
@@ -67,7 +68,7 @@ $this->headScript()
                             <div class="form-group">
                                 <label for="leaveId">Letters</label>
                                 <span class="required" aria-required="true">*</span>
-                                <select name="letterId" required="required" id="letterId" class="form-control">
+                                <select name="letterId" required="required" id="letterId" class="form-control" required>
                                     <option value="" disabled="" selected="">Please select</option>
                                     <?php foreach ($letter_lists as $key => $value) { ?>
                                         <option value="<?php echo $key ?>"><?php echo $value ?></option>

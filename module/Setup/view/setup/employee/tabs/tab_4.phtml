@@ -1,8 +1,10 @@
 <?php
 $formFour->setAttribute('id', 'form4');
 $joinDate = $formFour->get('joinDate');
+$grossSalary = $formFour->get('grossSalary');
 $salary = $formFour->get('salary');
 $salaryPf = $formFour->get('salaryPf');
+$salaryPf->setAttribute('readonly', true);
 $contractExpiryDt = $formFour->get('contractExpiryDt');
 
 $serviceTypeId = $formFour->get('serviceTypeId');
@@ -71,6 +73,7 @@ $group[null] = "Dont Generate";
 $groupId->setValueOptions($group);
 
 $allowance = $formFour->get('allowance');
+$allowance->setAttribute('readonly', true);
 
 // $taxBase = $formFour->get('taxBase');
 
@@ -79,8 +82,10 @@ $gratuityDate = $formFour->get('gratuityDate');
 $disabledFlag = $formFour->get('disabledFlag');
 $previousSalary = $formFour->get('previousSalary');
 $dearnessAllowance = $formFour->get('dearnessAllowance');
+$dearnessAllowance->setAttribute('readonly', true);
 $currentSalary = $formFour->get('currentSalary');
 $gratuity = $formFour->get('gratuity');
+$gratuity->setAttribute('readonly', true);
 
 $formFour->setAttribute('action', $this->url('employee', ['action' => 'edit', 'id' => $id, 'tab' => 4]));
 $formFour->setAttribute("name", "employeeForm");
@@ -110,12 +115,12 @@ $formFour->prepare();
 
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
-                        <div class="form-group  <?= empty($salary->getMessages()) ? "" : "error" ?>">
+                        <div class="form-group  <?= empty($grossSalary->getMessages()) ? "" : "error" ?>">
                             <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($salary); ?></div>
+                                <?php print $this->formLabel($grossSalary); ?></div>
                             <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($salary); ?></div>
-                            <?php print $this->formElementErrors()->render($salary, ['class' => 'help-block error']); ?>
+                                <?php print $this->formElement($grossSalary); ?></div>
+                            <?php print $this->formElementErrors()->render($grossSalary, ['class' => 'help-block error']); ?>
                         </div>
                     </div>
                 </div>
@@ -134,15 +139,16 @@ $formFour->prepare();
 
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
-                        <div class="form-group  <?= empty($allowance->getMessages()) ? "" : "error" ?>">
+                        <div class="form-group  <?= empty($salary->getMessages()) ? "" : "error" ?>">
                             <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($allowance); ?></div>
+                                <?php print $this->formLabel($salary); ?></div>
                             <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($allowance); ?></div>
-                            <?php print $this->formElementErrors()->render($allowance, ['class' => 'help-block error']); ?>
+                                <?php print $this->formElement($salary); ?></div>
+                            <?php print $this->formElementErrors()->render($salary, ['class' => 'help-block error']); ?>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
 
@@ -153,6 +159,31 @@ $formFour->prepare();
                             <div class="col-xs-6 col-sm-6 cgap-4">
                                 <?php print $this->formElement($designationId); ?></div>
                             <?php print $this->formElementErrors()->render($designationId, ['class' => 'help-block error']); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="row bottomgap">
+                        <div class="form-group  <?= empty($allowance->getMessages()) ? "" : "error" ?>">
+                            <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
+                                <?php print $this->formLabel($allowance); ?></div>
+                            <div class="col-xs-6 col-sm-6 cgap-4">
+                                <?php print $this->formElement($allowance); ?></div>
+                            <?php print $this->formElementErrors()->render($allowance, ['class' => 'help-block error']); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="row bottomgap">
+
+                        <div class="form-group   <?= empty($positionId->getMessages()) ? "" : "error" ?>">
+                            <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
+                                <?php print $this->formLabel($positionId); ?></div>
+                            <div class="col-xs-6 col-sm-6 cgap-4">
+                                <?php print $this->formElement($positionId); ?></div>
+                            <?php print $this->formElementErrors()->render($positionId, ['class' => 'help-block error']); ?>
                         </div>
                     </div>
                 </div>
@@ -171,32 +202,6 @@ $formFour->prepare();
 
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
-
-                        <div class="form-group   <?= empty($positionId->getMessages()) ? "" : "error" ?>">
-                            <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($positionId); ?></div>
-                            <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($positionId); ?></div>
-                            <?php print $this->formElementErrors()->render($positionId, ['class' => 'help-block error']); ?>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="row bottomgap">
-                        <div class="form-group  <?= empty($dearnessAllowance->getMessages()) ? "" : "error" ?>">
-                            <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($dearnessAllowance); ?></div>
-                            <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($dearnessAllowance); ?></div>
-                            <?php print $this->formElementErrors()->render($dearnessAllowance, ['class' => 'help-block error']); ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="row bottomgap">
                         <div class="form-group   <?= empty($serviceTypeId->getMessages()) ? "" : "error" ?>">
                             <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
                                 <?php print $this->formLabel($serviceTypeId); ?></div>
@@ -209,12 +214,12 @@ $formFour->prepare();
 
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
-                        <div class="form-group  <?= empty($previousSalary->getMessages()) ? "" : "error" ?>">
+                        <div class="form-group  <?= empty($gratuity->getMessages()) ? "" : "error" ?>">
                             <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($previousSalary); ?></div>
+                                <?php print $this->formLabel($gratuity); ?></div>
                             <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($previousSalary); ?></div>
-                            <?php print $this->formElementErrors()->render($previousSalary, ['class' => 'help-block error']); ?>
+                                <?php print $this->formElement($gratuity); ?></div>
+                            <?php print $this->formElementErrors()->render($gratuity, ['class' => 'help-block error']); ?>
                         </div>
                     </div>
                 </div>
@@ -231,17 +236,18 @@ $formFour->prepare();
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-6">
+                <!-- <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
-                        <div class="form-group  <?= empty($gratuity->getMessages()) ? "" : "error" ?>">
+                        <div class="form-group  <?= empty($dearnessAllowance->getMessages()) ? "" : "error" ?>">
                             <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($gratuity); ?></div>
+                                <?php print $this->formLabel($dearnessAllowance); ?></div>
                             <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($gratuity); ?></div>
-                            <?php print $this->formElementErrors()->render($gratuity, ['class' => 'help-block error']); ?>
+                                <?php print $this->formElement($dearnessAllowance); ?></div>
+                            <?php print $this->formElementErrors()->render($dearnessAllowance, ['class' => 'help-block error']); ?>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
 
@@ -255,17 +261,6 @@ $formFour->prepare();
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <div class="row bottomgap">
-                        <div class="form-group  <?= empty($currentSalary->getMessages()) ? "" : "error" ?>">
-                            <div class="col-xs-6 col-sm-6 col-md-6 rightalign-4">
-                                <?php print $this->formLabel($currentSalary); ?></div>
-                            <div class="col-xs-6 col-sm-6 cgap-4">
-                                <?php print $this->formElement($currentSalary); ?></div>
-                            <?php print $this->formElementErrors()->render($currentSalary, ['class' => 'help-block error']); ?>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="row bottomgap">
                         <div class="form-group   <?= empty($functionalTypeId->getMessages()) ? "" : "error" ?>">
@@ -655,3 +650,30 @@ $formFour->prepare();
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const grossInput = document.getElementById("grossSalary");
+        const basicInput = document.getElementById("salary"); // Basic Salary
+        const pfInput = document.getElementById("salaryPf");
+        const gratuityInput = document.getElementById("gratuity");
+        const allowanceInput = document.getElementById("allowance");
+
+        function calculateSalary() {
+            let gross = parseFloat(grossInput.value) || 0;
+            let basic = parseFloat(basicInput.value) || 0;
+
+            let pf = basic * 0.10; // 10%
+            let gratuity = basic * 0.0833; // 8.33%
+            let allowance = gross - (basic + pf + gratuity);
+
+            pfInput.value = pf.toFixed(2);
+            gratuityInput.value = gratuity.toFixed(2);
+            allowanceInput.value = allowance.toFixed(2);
+        }
+
+        grossInput.addEventListener("keyup", calculateSalary);
+        basicInput.addEventListener("keyup", calculateSalary);
+    });
+</script>

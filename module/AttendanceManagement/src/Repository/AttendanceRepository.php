@@ -28,13 +28,21 @@ class AttendanceRepository implements RepositoryInterface
 
   public function add(Model $model)
   {
+    // echo '<pre>'; print_r($model->getArrayCopyForDB()['ATTENDANCE_DT']); die;
     $this->tableGateway->insert($model->getArrayCopyForDB());
-    $this->attendanceAfterInsert($model);
+    // $this->attendanceAfterInsert($model);
+
+    $date = (new \DateTime())->format('d-M-y');
+
+    $sql = "BEGIN 
+            HRIS_REATTENDANCE('$date', $model->employeeId, '$date');
+            commit;
+               END; ";
+    // echo '<pre>';print_r($sql);die;
+    EntityHelper::rawQueryResult($this->adapter, $sql);
   }
 
-  public function delete($id)
-  {
-  }
+  public function delete($id) {}
 
   public function edit(Model $model, $combo)
   {
@@ -47,9 +55,7 @@ class AttendanceRepository implements RepositoryInterface
     ]);
   }
 
-  public function fetchAll()
-  {
-  }
+  public function fetchAll() {}
 
   public function fetchById($combo)
   {
@@ -181,7 +187,7 @@ class AttendanceRepository implements RepositoryInterface
 
 
   private function attendanceAfterInsert($attendance)
-  { 
+  {
     $sql = "BEGIN HRIS_ATTENDANCE_AFTER_INSERT(
             :empId,
             TO_DATE(:attDate, 'YYYY-MM-DD'),
@@ -190,20 +196,20 @@ class AttendanceRepository implements RepositoryInterface
         ); END;";
 
     $params = [
-        'empId'   => $attendance->employeeId,
-        'attDate' => date('Y-m-d'),           // or $attendance->attendanceDt->format('Y-m-d')
-        'attTime' => date('H:i:s'),           // or $attendance->attendanceTime->format('H:i:s')
-        'remarks' => $attendance->remarks,
+      'empId'   => $attendance->employeeId,
+      'attDate' => date('Y-m-d'),           // or $attendance->attendanceDt->format('Y-m-d')
+      'attTime' => date('H:i:s'),           // or $attendance->attendanceTime->format('H:i:s')
+      'remarks' => $attendance->remarks,
     ];
 
-    
+
     $statement = $this->adapter->query($sql);
-    
+
     try {
       $statement->execute($params);
     } catch (\Zend\Db\Adapter\Exception\RuntimeException $e) {
-        error_log("Attendance insert failed: " . $e->getMessage());
-        throw $e; // or handle gracefully
+      error_log("Attendance insert failed: " . $e->getMessage());
+      throw $e; // or handle gracefully
     }
   }
 

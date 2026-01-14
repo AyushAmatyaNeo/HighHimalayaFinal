@@ -321,6 +321,7 @@ class EmployeeController extends HrisController
                         $formFourModel->exchangeArrayFromForm($this->formFour->getData());
                         $formFourModel->modifiedBy = $this->employeeId;
                         $formFourModel->modifiedDt = Helper::getcurrentExpressionDate();
+                        
                         // echo '<pre>';print_r($formFourModel);die;
                         if ($employeeData['JOIN_DATE'] != $formFourModel->joinDate) {
                             // Holiday Auto Assign Procedure

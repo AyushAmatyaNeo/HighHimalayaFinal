@@ -127,10 +127,10 @@ return [
                     ]
                 ]
             ],
-			
-			
-			
-			   'vacancy' => [
+
+
+
+            'vacancy' => [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/setup/vacancy[/:action[/:id]]',
@@ -141,7 +141,7 @@ return [
                 ]
             ],
 
-			
+
             'branch' => [
                 'type' => segment::class,
                 'options' => [
@@ -454,6 +454,16 @@ return [
                     ]
                 ],
             ],
+            'viewDocument' => [
+                'type' => 'Segment',
+                'options' => [
+                    'route' => '/setup/viewDocument[/:id][/:empId]',
+                    'defaults' => [
+                        'controller' => LetterSetupController::class,
+                        'action' => 'viewDocument',
+                    ],
+                ],
+            ],
         ]
     ],
     'navigation' => [
@@ -543,9 +553,9 @@ return [
                 ]
             ]
         ],
-		
-		
-		 'vacancy' => [
+
+
+        'vacancy' => [
             [
                 'label' => 'Vacancy',
                 'route' => 'vacancy',
@@ -1160,7 +1170,7 @@ return [
                 ]
             ]
         ],
-        
+
         'letterSetup' => [
             [
                 'label' => 'letterSetup',
@@ -1431,7 +1441,7 @@ return [
             TravelExpClassController::class => ControllerFactory::class,
             EventsAndConferenceController::class => ControllerFactory::class,
             BankController::class => ControllerFactory::class,
-			VacancyController::class => ControllerFactory::class,
+            VacancyController::class => ControllerFactory::class,
             EmployeeSetupController::class => ControllerFactory::class,
             LetterSetupController::class => ControllerFactory::class,
             PerformanceSetupController::class => ControllerFactory::class,

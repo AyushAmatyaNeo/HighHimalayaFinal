@@ -41,7 +41,7 @@ $form->prepare();
 
     .letter-content {
         position: absolute;
-        top: 50mm;
+        top: 35mm;
         left: 10mm;
         right: 10mm;
         bottom: 10mm;
@@ -377,7 +377,7 @@ $form->prepare();
 <?php
 $imgUrl = $this->basePath('uploads/' . $company_logo);
 ?>
-<button id="print-preview-btn" onclick="printPreview()" class="btn btn-success">Print</button>
+<!-- <button id="print-preview-btn" onclick="printPreview()" class="btn btn-success">Print</button> -->
 
 <input type="hidden" id="ImageUrl" value="<?= $imgUrl ?>">
 <div id="letter-head-container">
