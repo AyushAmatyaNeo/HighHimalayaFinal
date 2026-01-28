@@ -89,7 +89,7 @@
             $('.event-div input, .event-div select').prop('disabled', true).removeAttr('required');
 
             // Show the corresponding div based on the selected serviceEvent and enable the relevant form fields
-            if ($serviceEvent == 'Appointment' || $serviceEvent == 'Promotion' || $serviceEvent == 'Company Transfer') {
+            if ($serviceEvent == 'Appointment' || $serviceEvent == 'Promotion' || $serviceEvent == 'Transfer' || $serviceEvent == 'Company Transfer') {
                 $('#appointmentDiv').show();
                 $('#appointmentDiv input, #appointmentDiv select').prop('disabled', false).attr('required', 'required');
             } else if ($serviceEvent == 'Resignation' || $serviceEvent == 'Retirement' || $serviceEvent == 'Suspend') {
@@ -121,7 +121,7 @@
                         var serviceEventContent = '<table class="table">';
         
                         // Conditional fields based on serviceEvent
-                        if (item['SERVICE_EVENT_TYPE_NAME'] === 'Appointment' || item['SERVICE_EVENT_TYPE_NAME'] === 'Promotion' || item['SERVICE_EVENT_TYPE_NAME'] === 'Company Transfer') { console.log("hello");
+                        if (item['SERVICE_EVENT_TYPE_NAME'] === 'Appointment' || item['SERVICE_EVENT_TYPE_NAME'] === 'Promotion' || item['SERVICE_EVENT_TYPE_NAME'] === 'Transfer' || item['SERVICE_EVENT_TYPE_NAME'] === 'Company Transfer') {
                             serviceEventContent += `
                             <tr><td><strong>Company</strong></td><td>${item['COMPANY_NAME']}</td></tr>
                             <tr><td><strong>Branch</strong></td><td>${item['BRANCH_NAME']}</td></tr>

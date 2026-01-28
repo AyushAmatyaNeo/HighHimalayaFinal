@@ -76,6 +76,11 @@ class VariableRepository  implements RepositoryInterface
             'Allowance' => $empId ? $this->fetchEmployeeAllowance($empId) : '',
             'Gratuity' => $empId ? $this->fetchEmployeeGratuity($empId) : '',
             'PF' => $empId ? $this->fetchEmployeePf($empId) : '',
+            'FROM BRANCH' => $empId ? $this->fetchEmployeeFromBranch($empId) : '',
+            'TO BRANCH' => $empId ? $this->fetchEmployeeToBranch($empId) : '',
+            'EFFECTIVE FROM' => $empId ? $this->fetchEmployeeEffectiveFrom($empId) : '',
+            'TO BASIC SALARY' => $empId ? $this->fetchEmployeeToSalary($empId) : '',
+            'TO GROSS SALARY' => $empId ? $this->fetchEmployeeToGrossSalary($empId) : '',
         ];
     }
 
@@ -482,6 +487,110 @@ class VariableRepository  implements RepositoryInterface
             return '';
         }
 
+        return $this->formatNepaliNumber($value);
+    }
+
+    public function fetchEmployeeFromBranch($employeeId)
+    {
+        $boundedParameter = ['employeeId' => $employeeId];
+
+        $sql = "
+        SELECT *
+        FROM (
+            SELECT B.BRANCH_NAME
+            FROM HRIS_JOB_HISTORY J
+            LEFT JOIN HRIS_BRANCHES B ON B.BRANCH_ID = J.FROM_BRANCH_ID
+            WHERE J.EMPLOYEE_ID = :employeeId
+            ORDER BY J.START_DATE DESC
+        )
+        WHERE ROWNUM = 1
+    ";
+
+        $result = $this->rawQuery($sql, $boundedParameter);
+
+        return $result[0]['BRANCH_NAME'] ?? null;
+    }
+
+    public function fetchEmployeeToBranch($employeeId)
+    {
+        $boundedParameter = ['employeeId' => $employeeId];
+
+        $sql = "
+        SELECT *
+        FROM (
+            SELECT B.BRANCH_NAME
+            FROM HRIS_JOB_HISTORY J
+            LEFT JOIN HRIS_BRANCHES B ON B.BRANCH_ID = J.TO_BRANCH_ID
+            WHERE J.EMPLOYEE_ID = :employeeId
+            ORDER BY J.START_DATE DESC
+        )
+        WHERE ROWNUM = 1
+    ";
+
+        $result = $this->rawQuery($sql, $boundedParameter);
+
+        return $result[0]['BRANCH_NAME'] ?? null;
+    }
+
+    public function fetchEmployeeEffectiveFrom($employeeId)
+    {
+        $boundedParameter = ['employeeId' => $employeeId];
+
+        $sql = "
+        SELECT *
+        FROM (
+            SELECT START_DATE
+            FROM HRIS_JOB_HISTORY
+            WHERE EMPLOYEE_ID = :employeeId
+            ORDER BY START_DATE DESC
+        )
+        WHERE ROWNUM = 1
+    ";
+
+        $result = $this->rawQuery($sql, $boundedParameter);
+
+        return $result[0]['START_DATE'] ?? null;
+    }
+
+    public function fetchEmployeeToSalary($employeeId)
+    {
+        $boundedParameter = ['employeeId' => $employeeId];
+
+        $sql = "
+        SELECT *
+        FROM (
+            SELECT TO_SALARY
+            FROM HRIS_JOB_HISTORY
+            WHERE EMPLOYEE_ID = :employeeId
+            ORDER BY START_DATE DESC
+        )
+        WHERE ROWNUM = 1
+    ";
+
+        $result = $this->rawQuery($sql, $boundedParameter);
+
+        $value = $result[0]['TO_SALARY'] ?? null;
+        return $this->formatNepaliNumber($value);
+    }
+
+    public function fetchEmployeeToGrossSalary($employeeId)
+    {
+        $boundedParameter = ['employeeId' => $employeeId];
+
+        $sql = "
+        SELECT *
+        FROM (
+            SELECT TO_GROSS_SALARY
+            FROM HRIS_JOB_HISTORY
+            WHERE EMPLOYEE_ID = :employeeId
+            ORDER BY START_DATE DESC
+        )
+        WHERE ROWNUM = 1
+    ";
+
+        $result = $this->rawQuery($sql, $boundedParameter);
+
+        $value = $result[0]['TO_GROSS_SALARY'] ?? null;
         return $this->formatNepaliNumber($value);
     }
 

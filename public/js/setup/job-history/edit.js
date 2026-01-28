@@ -28,7 +28,7 @@
                         var serviceEventContent = '<table class="table">';
         
                         // Conditional fields based on serviceEvent
-                        if (item['SERVICE_EVENT_TYPE_NAME'] === 'Appointment' || item['SERVICE_EVENT_TYPE_NAME'] === 'Promotion' || item['SERVICE_EVENT_TYPE_NAME'] === 'Company Transfer') { console.log("hello");
+                        if (item['SERVICE_EVENT_TYPE_NAME'] === 'Appointment' || item['SERVICE_EVENT_TYPE_NAME'] === 'Promotion' || item['SERVICE_EVENT_TYPE_NAME'] === 'Transfer' || item['SERVICE_EVENT_TYPE_NAME'] === 'Company Transfer') { console.log("hello");
                             serviceEventContent += `
                             <tr><td><strong>Company</strong></td><td>${item['COMPANY_NAME']}</td></tr>
                             <tr><td><strong>Branch</strong></td><td>${item['BRANCH_NAME']}</td></tr>

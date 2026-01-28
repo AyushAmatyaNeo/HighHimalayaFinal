@@ -91,6 +91,15 @@ class JobHistoryForm
     public $toSalary;
 
     /**
+     * @Annotion\Type("Zend\Form\Element\Number")
+     * @Annotation\Required(true)
+     * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
+     * @Annotation\Options({"label":"To Gross Salary"})
+     * @Annotation\Attributes({ "id":"toGrossSalary", "class":"form-control" })
+     */
+    public $toGrossSalary;
+
+    /**
      * @Annotation\Type("Zend\Form\Element\Checkbox")
      * @Annotation\Filter({"name":"StringTrim","name":"StripTags"})
      * @Annotation\Options({"label":"Is Retired"})

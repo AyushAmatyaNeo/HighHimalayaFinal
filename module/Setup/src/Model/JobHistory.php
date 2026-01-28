@@ -4,7 +4,8 @@ namespace Setup\Model;
 
 use Application\Model\Model;
 
-class JobHistory extends Model {
+class JobHistory extends Model
+{
 
     const TABLE_NAME = "HRIS_JOB_HISTORY";
     const JOB_HISTORY_ID = "JOB_HISTORY_ID";
@@ -18,7 +19,13 @@ class JobHistory extends Model {
     const TO_POSITION_ID = "TO_POSITION_ID";
     const TO_SERVICE_TYPE_ID = "TO_SERVICE_TYPE_ID";
     const TO_COMPANY_ID = "TO_COMPANY_ID";
+    const FROM_BRANCH_ID = "FROM_BRANCH_ID";
+    const FROM_DEPARTMENT_ID = "FROM_DEPARTMENT_ID";
+    const FROM_DESIGNATION_ID = "FROM_DESIGNATION_ID";
+    const FROM_POSITION_ID = "FROM_POSITION_ID";
+    const FROM_COMPANY_ID = "FROM_COMPANY_ID";
     const TO_SALARY = "TO_SALARY";
+    const TO_GROSS_SALARY = "TO_GROSS_SALARY";
     const STATUS = "STATUS";
     const CREATED_DT = "CREATED_DT";
     const MODIFIED_DT = "MODIFIED_DT";
@@ -41,7 +48,13 @@ class JobHistory extends Model {
     public $toDesignationId;
     public $toPositionId;
     public $toCompanyId;
+    public $fromBranchId;
+    public $fromDepartmentId;
+    public $fromDesignationId;
+    public $fromPositionId;
+    public $fromCompanyId;
     public $toSalary;
+    public $toGrossSalary;
     public $status;
     public $createdDt;
     public $modifiedDt;
@@ -64,7 +77,13 @@ class JobHistory extends Model {
         'toDesignationId' => self::TO_DESIGNATION_ID,
         'toPositionId' => self::TO_POSITION_ID,
         'toCompanyId' => self::TO_COMPANY_ID,
+        'fromBranchId' => self::FROM_BRANCH_ID,
+        'fromDepartmentId' => self::FROM_DEPARTMENT_ID,
+        'fromDesignationId' => self::FROM_DESIGNATION_ID,
+        'fromPositionId' => self::FROM_POSITION_ID,
+        'fromCompanyId' => self::FROM_COMPANY_ID,
         'toSalary' => self::TO_SALARY,
+        'toGrossSalary' => self::TO_GROSS_SALARY,
         'status' => self::STATUS,
         'createdDt' => self::CREATED_DT,
         'modifiedDt' => self::MODIFIED_DT,
@@ -76,5 +95,4 @@ class JobHistory extends Model {
         'fileId' => self::FILE_ID,
         'toContractExpiryDate' => self::TO_CONTRACT_EXPIRY_DATE,
     ];
-
 }

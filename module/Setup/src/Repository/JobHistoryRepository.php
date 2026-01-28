@@ -30,6 +30,7 @@ class JobHistoryRepository implements RepositoryInterface
         if (!isset($history['TO_SALARY'])) {
             $history['TO_SALARY'] = 0;
         }
+        
         $this->tableGateway->insert($history);
         $this->updateEmployeeProfile($history['JOB_HISTORY_ID']);
     }
@@ -359,7 +360,8 @@ class JobHistoryRepository implements RepositoryInterface
             AND ROWNUM        =1", $boundedParams));
     }
 
-    function fetchBeforeStartDate($date, $employeeId) {
+    function fetchBeforeStartDate($date, $employeeId)
+    {
         $result = EntityHelper::rawQueryResult($this->adapter, "
             SELECT * FROM
             (SELECT INITCAP(TO_CHAR(H.START_DATE, 'DD-MON-YYYY')) AS START_DATE,
@@ -381,7 +383,9 @@ class JobHistoryRepository implements RepositoryInterface
             AND H.EMPLOYEE_ID = {$employeeId}
             ORDER BY H.START_DATE DESC)
             WHERE ROWNUM        =1");
-            echo'<pre>';print_r($result);die;
+        echo '<pre>';
+        print_r($result);
+        die;
         return $result->current();
     }
 
@@ -430,7 +434,7 @@ class JobHistoryRepository implements RepositoryInterface
         $boundedParams = [];
         $boundedParams['jobHistoryId'] = $jobHistoryId;
         // $salary = isset($j->toSalary) ? $j->toSalary : 0;
-        
+
         EntityHelper::rawQueryResult($this->adapter, "
             BEGIN
               HRIS_UPDATE_EMPLOYEE_SERVICE(:jobHistoryId);
@@ -473,5 +477,26 @@ class JobHistoryRepository implements RepositoryInterface
     and e.status='E' order by join_date desc";
         $statement = $this->adapter->query($sql);
         return $statement->execute($boundedParameter);
+    }
+
+    public function fetchEmployeeDetail($empId)
+    { 
+        $boundedParameter = ['employee_id' => $empId];
+
+        $sql = "
+        SELECT
+            COMPANY_ID,
+            BRANCH_ID,
+            DEPARTMENT_ID,
+            DESIGNATION_ID,
+            POSITION_ID
+        FROM HRIS_EMPLOYEES
+        WHERE EMPLOYEE_ID = :employee_id
+    ";
+
+        $statement = $this->adapter->query($sql);
+        $result = $statement->execute($boundedParameter)->current();
+
+        return $result; dd($result);
     }
 }

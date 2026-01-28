@@ -58,7 +58,8 @@ class JobHistoryController extends HrisController
             if ($this->form->isValid() || !$this->form->isValid()) {
 
                 $jobHistory = new JobHistory();
-                $jobHistory->exchangeArrayFromForm($this->form->getData());
+                $jobHistory->exchangeArrayFromForm($this->form->getData()); 
+                $employee = $this->repository->fetchEmployeeDetail($jobHistory->employeeId);
                 $jobHistory->jobHistoryId = ((int) Helper::getMaxId($this->adapter, JobHistory::TABLE_NAME, JobHistory::JOB_HISTORY_ID)) + 1;
                 $jobHistory->startDate = Helper::getExpressionDate($jobHistory->eventDate);
                 $jobHistory->endDate = Helper::getExpressionDate($jobHistory->endDate);
@@ -68,7 +69,13 @@ class JobHistoryController extends HrisController
                 $jobHistory->retiredFlag = $jobHistory->retiredFlag ? 'Y' : 'N';
                 $jobHistory->disabledFlag = $jobHistory->disabledFlag ? 'Y' : 'N';
                 $jobHistory->eventDate = Helper::getExpressionDate($jobHistory->eventDate);
-                $jobHistory->toContractExpiryDate = Helper::getExpressionDate($jobHistory->toContractExpiryDate); 
+                $jobHistory->toContractExpiryDate = Helper::getExpressionDate($jobHistory->toContractExpiryDate);
+                $jobHistory->fromCompanyId = $employee['COMPANY_ID'];
+                $jobHistory->fromBranchId = $employee['BRANCH_ID'];
+                $jobHistory->fromDepartmentId = $employee['DEPARTMENT_ID'];
+                $jobHistory->fromDesignationId = $employee['DESIGNATION_ID'];
+                $jobHistory->fromPositionId = $employee['POSITION_ID'];
+                
                 $this->repository->add($jobHistory);
                 // $this->repository->updateUser($jobHistory->employeeId,$jobHistory->disabledFlag);
                 $this->flashmessenger()->addMessage("Job History Successfully added!!!");
@@ -99,7 +106,7 @@ class JobHistoryController extends HrisController
 
         $jobHistory = new JobHistory();
         if ($request->isPost()) {
-            $this->form->setData($request->getPost()); 
+            $this->form->setData($request->getPost());
             if ($this->form->isValid() || !$this->form->isValid()) {
                 $jobHistory->exchangeArrayFromForm($this->form->getData());
                 $jobHistory->startDate = Helper::getExpressionDate($jobHistory->eventDate);
