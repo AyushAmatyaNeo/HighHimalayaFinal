@@ -262,6 +262,102 @@ if ($this->messages) {
         }
     }
 </style>
+
+<style>
+    @page {
+        size: A4;
+        margin: 8mm;
+    }
+
+    @media print {
+
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 12px !important;
+        }
+
+        /* hide buttons */
+        .btn,
+        .no-print,
+        .print-btn {
+            display: none !important;
+        }
+
+        /* prevent breaking sections */
+        .print-section {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+            margin-bottom: 10px !important;
+        }
+
+        /* make image column full width in print */
+        .personal-info .row>.col-md-3:first-child {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+            text-align: center !important;
+        }
+
+        /* keep other columns below the image (optional) */
+        .personal-info .row>.col-md-3:not(:first-child) {
+            width: 33.333% !important;
+            max-width: 33.333% !important;
+            flex: 0 0 33.333% !important;
+        }
+
+        /* optional: image bigger in print */
+        .profile-img-box img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        /* bootstrap grid fix */
+        .row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+
+        .col-md-4 {
+            flex: 0 0 33.3333% !important;
+            max-width: 33.3333% !important;
+        }
+
+        .col-md-6 {
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
+        }
+
+        .col-md-12 {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* reduce spacing */
+        h4,
+        h5,
+        h6 {
+            margin: 4px 0 !important;
+        }
+
+        p {
+            margin: 2px 0 !important;
+        }
+
+        .card,
+        .card-body {
+            padding: 6px !important;
+        }
+
+        /* Gap Reduce */
+        .personal-info,
+        .address-info {
+            padding: 0px 10px;
+            margin-bottom: 0px;
+        }
+    }
+</style>
+
 <div class="page-bar">
     <?= $this->navigation('Zend\Navigation\profile')->breadcrumbs()->setMinDepth(0)->setPartial('partial/breadcrumb'); ?>
 </div>
